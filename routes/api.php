@@ -17,9 +17,10 @@ Route::post('/admin/login', [AdminController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
+    Route::post('/user/logout', [AuthController::class, 'logout']);
 });
 
 
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/user/register', [AuthController::class, 'register']);
+Route::post('/user/login', [AuthController::class, 'login']);
