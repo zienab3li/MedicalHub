@@ -7,59 +7,35 @@ use Illuminate\Http\Request;
 
 class OrderItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $orderItems = OrderItem::all();
+        return response()->json($orderItems);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $orderItem = OrderItem::create($request->all());
+        return response()->json($orderItem, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(OrderItem $orderItem)
+    public function show($id)
     {
-        //
+        $orderItem = OrderItem::findOrFail($id);
+        return response()->json($orderItem);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(OrderItem $orderItem)
+    public function update(Request $request, $id)
     {
-        //
+        $orderItem = OrderItem::findOrFail($id);
+        $orderItem->update($request->all());
+        return response()->json($orderItem);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, OrderItem $orderItem)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(OrderItem $orderItem)
-    {
-        //
+        $orderItem = OrderItem::findOrFail($id);
+        $orderItem->delete();
+        return response()->json(null, 204);
     }
 }
