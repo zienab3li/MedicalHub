@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Models\User;
@@ -34,29 +34,26 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function updateUser(Request $request) {
-        $user = $request->user();
-    
-        $data = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'sometimes|string|min:6|confirmed',
-            'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-    
+    public function updateUser(UpdateUserRequest $request)
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $data = $request->validated();
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('users', 'public');
             $data['image'] = $imagePath;
         }
-    
+
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-    
+
         $user->update($data);
-    
+
         return response()->json([
             'message' => 'User updated successfully',
             'user' => $user,
@@ -80,8 +77,6 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token,
         ]);
-
-        
     }
 
     public function logout(): JsonResponse
@@ -91,4 +86,3 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully'], 200);
     }
 }
-
