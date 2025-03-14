@@ -19,25 +19,29 @@ use App\Http\Controllers\SocialLoginController;
 Route::middleware('auth:sanctum')->group(function () {
 
     //admin routs
-    Route::post('/admin/register', [AdminController::class, 'register']);
-    Route::post('/admin/login', [AdminController::class, 'login']);
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
-
     Route::post('/user/update', [AuthController::class, 'updateuser'])->name('user.update');
     Route::post('/user/logout', [AuthController::class, 'logout']);
 });
 
-Route::post('/user/register', [AuthController::class, 'register']);
-Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
+//admin routs
+Route::prefix('admin')->group(function () {
+    Route::post('/register', [AdminController::class, 'register']);
+    Route::post('/login', [AdminController::class, 'login']);
+});
 
+
+// user routs
+Route::prefix('user')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+});
 
 
 
 
 //social routs
-Route::get('auth/{provider}/redirect' , [SocialLoginController::class , 'redirect'])->name('auth.socialite.redirect');
-Route::get('auth/{provider}/callback',[SocialLoginController::class , 'callback'])->name('auth.socialite.callback');
-
-
+Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])->name('auth.socialite.redirect');
+Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'])->name('auth.socialite.callback');
