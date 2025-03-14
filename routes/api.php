@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClinicController;
+use App\Http\Controllers\DoctorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -27,7 +29,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/register', [AuthController::class, 'register']);
     Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
     Route::post('/user/logout', [AuthController::class, 'logout']);
+
+    // clinic routes
+    Route::apiResource('clinics',ClinicController::class);
+
+    // Doctor routes
+    Route::apiResource('doctors', DoctorController::class); // Add doctor routes
+    Route::post('/doctors/logout', [DoctorController::class, 'logout']); // Doctor logout
 });
+
+// Public routes (no authentication required)
+Route::post('/doctors/login', [DoctorController::class, 'login'])->name('doctor.login'); // Doctor login
 
 
 
