@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\UpdateUserRequest;
+
+use App\Http\Requests\User\UpdateRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Models\User;
@@ -34,7 +35,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function updateUser(UpdateUserRequest $request)
+    public function updateUser(UpdateRequest $request)
     {
         $user = auth()->user();
 
