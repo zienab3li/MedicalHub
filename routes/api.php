@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -19,18 +20,23 @@ Route::get('/user', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
 
     //admin routs
-    Route::post('/admin/register', [AdminController::class, 'register']);
-    Route::post('/admin/login', [AdminController::class, 'login']);
+  
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
-    Route::post('/user/register', [AuthController::class, 'register']);
-    Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
+
     Route::post('/user/logout', [AuthController::class, 'logout']);
+
+    Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
+
 });
 
 
+Route::post('/admin/register', [AdminController::class, 'register']);
+Route::post('/admin/login', [AdminController::class, 'login']);
 
+Route::post('/user/register', [AuthController::class, 'register']);
+Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
 
 
 //social routs
