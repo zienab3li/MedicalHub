@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\SocialLoginController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 
 
@@ -24,10 +24,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
-    Route::post('/user/register', [AuthController::class, 'register']);
-    Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
+
+    Route::post('/user/update', [AuthController::class, 'updateuser'])->name('user.update');
     Route::post('/user/logout', [AuthController::class, 'logout']);
 });
+
+Route::post('/user/register', [AuthController::class, 'register']);
+Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
 
 
 
