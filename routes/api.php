@@ -20,12 +20,10 @@ use App\Http\Controllers\SocialLoginController;
 Route::middleware('auth:sanctum')->group(function () {
 
     //admin routs
-  
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
     Route::post('/user/update', [AuthController::class, 'updateuser'])->name('user.update');
-
     Route::post('/user/logout', [AuthController::class, 'logout']);
 });
 
