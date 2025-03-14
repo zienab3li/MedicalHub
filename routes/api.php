@@ -25,16 +25,26 @@ Route::middleware('auth:sanctum')->group(function () {
     // user routs
     Route::post('/user/update', [AuthController::class, 'updateuser'])->name('user.update');
     Route::post('/user/logout', [AuthController::class, 'logout']);
+
+    //dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
+});
+
+Route::prefix('admin')->group(function () {
+    Route::post('/register', [AdminController::class, 'register']);
+    Route::post('/login', [AdminController::class, 'login']);
 });
 
 
-Route::post('/admin/register', [AdminController::class, 'register']);
-Route::post('/admin/login', [AdminController::class, 'login']);
-
-Route::post('/user/register', [AuthController::class, 'register']);
-Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
+// user routs
+Route::prefix('user')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+});
 
 
 //social routs
-Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])->name('auth.socialite.redirect');
-Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'])->name('auth.socialite.callback');
+Route::prefix('auth')->group(function () {
+    Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])->name('auth.socialite.redirect');
+    Route::get('auth/{provider}/callback', [SocialLoginController::class, 'callback'])->name('auth.socialite.callback');
+});
