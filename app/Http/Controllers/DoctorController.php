@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use Illuminate\Http\JsonResponse;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +36,7 @@ class DoctorController extends Controller
         $request->validate([
             'name'=>'required',
             'email' => 'required|email|unique:doctors,email', // Add email for login
-            'password' => 'required|string|min:8', // Add password for login
+            'password' => 'required|string|min:6|confirmed', // Add password for login
             'clinic_id' => 'required|exists:clinics,id',
             'specialization' => 'required|string',
             'bio' => 'nullable|string',
@@ -55,7 +56,7 @@ class DoctorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Doctor $doctor):JsonResponse
+    public function show( Doctor $doctor):JsonResponse
     {
         return response()->json(['data' => $doctor->load('clinic')], 201);
     }
@@ -71,28 +72,29 @@ class DoctorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Doctor $doctor):JsonResponse
-    {
-        $request->validate([
-            'name'=>'required',
-            'email' => 'required|email|unique:doctors,email' . $doctor->id, // Add email for login
-            'password' => 'sometimes|string|min:8', // Add password for login
-            'clinic_id' => 'required|exists:clinics,id',
-            'specialization' => 'required|string',
-            'bio' => 'nullable|string',
-            'clinic_address' => 'nullable|string',
-            'role' => 'sometimes|in:human,vet',
-            'address' => 'nullable|string',
-            'phone' => 'nullable|string',
-            'image' => 'nullable|string',
-        ]);
-        if($request->has('password')){
-            $request->merge(['password' => Hash::make($request->password)]);
-        }
-        $doctor->update($request->all());
-        return response()->json(['data' => $doctor->load('clinic')], 200);
-        
+    public function update(Request $request, Doctor $doctor): JsonResponse
+{
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:doctors,email,' . $doctor->id,
+        'password' => 'sometimes|string|min:6|confirmed',
+        'clinic_id' => 'required|exists:clinics,id',
+        'specialization' => 'required|string',
+        'bio' => 'nullable|string',
+        'clinic_address' => 'nullable|string',
+        'role' => 'sometimes|in:human,vet',
+        'address' => 'nullable|string',
+        'phone' => 'nullable|string',
+        'image' => 'nullable|string',
+    ]);
+
+    if ($request->has('password')) {
+        $request->merge(['password' => Hash::make($request->password)]);
     }
+
+    $doctor->update($request->all());
+    return response()->json(['data' => $doctor->load('clinic')], 200);
+}
 
     /**
      * Remove the specified resource from storage.
@@ -108,13 +110,12 @@ class DoctorController extends Controller
             'email' => 'required|email',
             'password' => 'required|string|min:8',
         ]);
-        if(Auth::guard('doctor')->attempt($request->only('email','password'))){
+       
+        
             $doctor = Doctor::where('email', $request->email)->first();
             $token = $doctor->createToken('doctor-token')->plainTextToken;
             return response()->json(["message"=>"Doctor logged in successfully","data"=>$doctor,"token"=>$token],200);
-
-        }
-        return response()->json(["message"=>"Invalid email or password"],401);
+           
 
     }
     public function logout(Request $request):JsonResponse

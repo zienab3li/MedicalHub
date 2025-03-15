@@ -15,6 +15,7 @@ Route::get('/user', function (Request $request) {
 
 
 
+Route::post('/user/register', [AuthController::class, 'register']);
 
 
 
@@ -26,20 +27,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
-    Route::post('/user/register', [AuthController::class, 'register']);
     Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
     Route::post('/user/logout', [AuthController::class, 'logout']);
 
     // clinic routes
-    Route::apiResource('clinics',ClinicController::class);
+   
 
     // Doctor routes
-    Route::apiResource('doctors', DoctorController::class); // Add doctor routes
+   
     Route::post('/doctors/logout', [DoctorController::class, 'logout']); // Doctor logout
 });
-
+Route::apiResource('clinics',ClinicController::class);
+Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 // Public routes (no authentication required)
-Route::post('/doctors/login', [DoctorController::class, 'login'])->name('doctor.login'); // Doctor login
+Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
 
 
 

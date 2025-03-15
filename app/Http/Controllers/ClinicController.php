@@ -64,7 +64,7 @@ class ClinicController extends Controller
             'description'=>'required|string|max:255'
         ]);
         $clinic->update($request->all());
-        return response()->json(["data"=>$clinic],201);
+        return response()->json(["data"=>$clinic],200);
     }
 
     /**

@@ -47,9 +47,9 @@ return [
     
         // Add a new guard for doctors
         'doctor' => [
-            'driver' => 'sanctum', // Use Sanctum for API token authentication
-            'provider' => 'doctors', // Use the 'doctors' provider
-        ],
+        'driver' => 'sanctum',
+        'provider' => 'doctors',
+    ],
     ],
 
     /*
@@ -75,10 +75,10 @@ return [
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
           // Add a new provider for doctors
-        'doctors' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Doctor::class, // Use the Doctor model
-    ],
+          'doctors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Doctor::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
