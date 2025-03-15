@@ -1,8 +1,12 @@
 <?php
-
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\PrescriptionController;
+use App\Http\Controllers\ProductController;
+use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -48,3 +52,32 @@ Route::prefix('auth')->group(function () {
     Route::get('/{provider}/redirect', [SocialLoginController::class, 'redirect'])->name('auth.socialite.redirect');
     Route::get('/{provider}/callback', [SocialLoginController::class, 'callback'])->name('auth.socialite.callback');
 });
+
+Route::post('/user/register', [AuthController::class, 'register']);
+Route::post('/user/login', [AuthController::class, 'login']);
+
+
+// products Routes
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/category/{category_id}', [ProductController::class, 'show']);
+
+// cart Routes
+Route::post('/cart', [CartItemController::class, 'addToCart']);
+Route::get('/cart', [CartItemController::class, 'viewCart']);
+Route::put('/cart/{id}', [CartItemController::class, 'updateCart']);
+Route::delete('/cart/{id}', [CartItemController::class, 'removeFromCart']);
+Route::delete('/cart', [CartItemController::class, 'clearCart']);
+
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('/cart', [CartItemController::class, 'addToCart']);
+//     Route::get('/cart', [CartItemController::class, 'viewCart']);
+//     Route::put('/cart/{id}', [CartItemController::class, 'updateCart']);
+// });
+
+//prescriptions routes
+Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+
+// });
+
