@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PrescriptionController extends Controller
 {
+    //  upload Prescription
     public function uploadPrescription(Request $request)
     {
         $request->validate([
