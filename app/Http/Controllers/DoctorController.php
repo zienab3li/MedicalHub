@@ -132,22 +132,6 @@ class DoctorController extends Controller
     //         'password' => 'required|string|min:8',
     //     ]);
 
-    //     if (!Auth::attempt($request->only('email', 'password'))) {
-    //         return response()->json([
-    //             'message' => 'Invalid credentials'
-    //         ], 401);
-    //     }
-
-    //     $doctor = Auth::user();
-    //     $token = $doctor->createToken('auth_token')->plainTextToken;
-
-    //     return response()->json([
-    //         'message' => 'Login successful',
-    //         'user' => $doctor,
-    //         'token' => $token,
-    //     ]);
-
-
     //         // $doctor = Doctor::where('email', $request->email)->first();
     //         // $token = $doctor->createToken('doctor-token')->plainTextToken;
     //         // return response()->json(["message"=>"Doctor logged in successfully","data"=>$doctor,"token"=>$token],200);
