@@ -7,12 +7,15 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // all products
     public function index()
     {
-        //
+        $products = Product::all();
+        return response([
+            'status' => 200,
+            'message' => 'Products List',
+            'data' => $products
+        ]);
     }
 
     /**
@@ -31,12 +34,24 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
+    //  show product by category
+
+    public function show($category_id)
     {
-        //
+        $products = Product::where('category_id', $category_id)->get();
+        if ($products->isEmpty()) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'No products found in this category',
+                'data' => []
+            ]);
+        }
+
+        return response([
+            'status' => 200,
+            'message' => 'Products List',
+            'data' => $products
+        ]);
     }
 
     /**
