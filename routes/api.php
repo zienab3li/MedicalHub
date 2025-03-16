@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -29,7 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/logout', [AuthController::class, 'logout']);
 });
 
-
+    Route::apiResource('posts',PostController::class);
+    Route::apiResource('comments',CommentController::class);
 
 
 
