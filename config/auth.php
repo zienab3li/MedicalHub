@@ -47,7 +47,7 @@ return [
     
         // Add a new guard for doctors
         'doctor' => [
-        'driver' => 'sanctum',
+        'driver' => 'session',
         'provider' => 'doctors',
     ],
     ],
@@ -74,11 +74,16 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-          // Add a new provider for doctors
-          'doctors' => [
+
+        'doctors' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Doctor::class,
+            'model' => env('AUTH_MODEL', App\Models\Doctor::class),
         ],
+          // Add a new provider for doctors
+        //   'doctors' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Doctor::class,
+        // ],
 
         // 'users' => [
         //     'driver' => 'database',
