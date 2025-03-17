@@ -1,17 +1,13 @@
 <?php
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
-<<<<<<< HEAD
-
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
-=======
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
->>>>>>> doctors
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -33,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
     // user routs
-<<<<<<< HEAD
+
     Route::post('/user/update', [AuthController::class, 'updateuser'])->name('user.update');
     Route::post('/user/logout', [AuthController::class, 'logout']);
 
@@ -44,7 +40,6 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::prefix('admin')->group(function () {
     Route::post('/register', [AdminController::class, 'register']);
     Route::post('/login', [AdminController::class, 'login']);
-=======
     Route::post('/user/login', [AuthController::class, 'login'])->name('user.login');
     Route::post('/user/logout', [AuthController::class, 'logout']);
 
@@ -54,7 +49,6 @@ Route::prefix('admin')->group(function () {
     // Doctor routes
    
     Route::post('/doctors/logout', [DoctorController::class, 'logout']); // Doctor logout
->>>>>>> doctors
 });
 Route::apiResource('clinics',ClinicController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
