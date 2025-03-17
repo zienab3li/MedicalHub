@@ -1,14 +1,18 @@
 <?php
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PostController;
+
+
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartItemController;
-use App\Http\Controllers\PrescriptionController;
 use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
+
     Route::apiResource('orders', controller: OrderController::class);
 
 // Route::get('/orders', [OrderController::class, 'index']);       
@@ -43,6 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
 // Route::get('/orders/{id}', [OrderController::class, 'show']);  
 // Route::put('/orders/{id}', [OrderController::class, 'update']); 
 // Route::delete('/orders/{id}', [OrderController::class, 'destroy']); 
+
+
+    Route::apiResource('posts',PostController::class);
+    Route::apiResource('comments',CommentController::class);
+
 });
 
 Route::prefix('admin')->group(function () {
@@ -62,6 +72,7 @@ Route::apiResource('clinics',ClinicController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
+
 
 
 // user routs
