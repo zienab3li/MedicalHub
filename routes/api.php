@@ -8,9 +8,10 @@ use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
+
 use App\Http\Controllers\SocialLoginController;
 
 // Route::get('/user', function (Request $request) {
@@ -35,6 +36,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
+    Route::apiResource('orders', controller: OrderController::class);
+
+// Route::get('/orders', [OrderController::class, 'index']);       
+// Route::post('/orders', [OrderController::class, 'store']);     
+// Route::get('/orders/{id}', [OrderController::class, 'show']);  
+// Route::put('/orders/{id}', [OrderController::class, 'update']); 
+// Route::delete('/orders/{id}', [OrderController::class, 'destroy']); 
 });
 
 Route::prefix('admin')->group(function () {
@@ -96,4 +104,3 @@ Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescriptio
 //     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
 
 // });
-
