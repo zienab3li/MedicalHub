@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
+    
+        // Add a new guard for doctors
+        'doctor' => [
+        'driver' => 'sanctum',
+        'provider' => 'doctors',
+    ],
     ],
 
     /*
@@ -63,6 +73,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+          // Add a new provider for doctors
+          'doctors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Doctor::class,
         ],
 
         // 'users' => [
