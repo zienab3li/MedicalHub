@@ -33,8 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
-
+  //cart orders
     Route::apiResource('orders',OrderController::class);
+    Route::apiResource('orders', OrderController::class);
+
     Route::apiResource('posts',PostController::class);
     Route::apiResource('comments',CommentController::class);
 
