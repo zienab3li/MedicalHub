@@ -13,6 +13,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RessetpasswordControll;
+
 
 use App\Http\Controllers\SocialLoginController;
 
@@ -50,6 +52,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/register', [AdminController::class, 'register']);
     Route::post('/login', [AdminController::class, 'login']);   
 });
+
+Route::post('/password/reset-link', [RessetpasswordControll::class, 'sendResetLink']);
+Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword']);
 
  // clinic routes
 Route::apiResource('clinics',ClinicController::class);

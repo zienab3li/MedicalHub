@@ -48,7 +48,7 @@ class RessetpasswordControll extends Controller
             'email'    => 'required|email|exists:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
-        
+
         // Mail::raw("Click the following link to reset your password: $resetLink", function ($message) use ($request) {
         //     $message->to($request->email)
         //             ->from('no-reply@medicalhub.com', 'MedicalHub') 
@@ -79,6 +79,4 @@ class RessetpasswordControll extends Controller
 }
 
 
-// Route::post('/password/reset-link', [RessetpasswordControll::class, 'sendResetLink']);
-// Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword']);
-// use App\Http\Controllers\RessetpasswordControll;
+
