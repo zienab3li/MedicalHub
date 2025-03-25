@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Cart;  // تصحيح خطأ إملائي: Reposotires -> Repositories
+namespace App\Repositories\Cart;  
 
 use App\Models\Cart;
 use App\Models\Product;
