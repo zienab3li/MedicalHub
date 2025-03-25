@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
@@ -87,7 +88,23 @@ Route::put('/cart/{id}', [CartItemController::class, 'updateCart']);
 Route::delete('/cart/{id}', [CartItemController::class, 'removeFromCart']);
 Route::delete('/cart', [CartItemController::class, 'clearCart']);
 
-
+//cart route 
+// Route::prefix('cart')->group(function () {
+   
+//     Route::get('/', [CartController::class, 'index']);
+    
+    
+//     Route::post('/', [CartController::class, 'store']);
+    
+   
+//     Route::put('/{id}', [CartController::class, 'update']);
+    
+//     Route::delete('/{id}', [CartController::class, 'destroy']);
+    
+   
+//     // Route::get('/total', [CartController::class, 'total']); 
+//     // Route::delete('/', [CartController::class, 'empty']); 
+// });
 //prescriptions routes
 Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
 // Route::middleware('auth:sanctum')->group(function () {
