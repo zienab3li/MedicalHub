@@ -18,23 +18,17 @@ class RessetpasswordControll extends Controller
             'email' => 'required|email|exists:users,email',
         ]);
 
-        // Generate random token
         $token = Str::random(60);
-
-        // Remove any existing tokens for this email
         DB::table('password_resets')->where('email', $request->email)->delete();
 
-        // Store new token
         DB::table('password_resets')->insert([
             'email'      => $request->email,
             'token'      => $token,
             'created_at' => Carbon::now(),
         ]);
 
-        // Generate reset link
         $resetLink = url("/api/password/reset?token=$token&email=" . urlencode($request->email));
 
-        // Send email using Blade template
         Mail::send('emails.reset_password', ['resetLink' => $resetLink], function ($message) use ($request) {
             $message->to($request->email)
                     ->from('no-reply@medicalhub.com', 'MedicalHub')
@@ -54,24 +48,27 @@ class RessetpasswordControll extends Controller
             'email'    => 'required|email|exists:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
+        
+        // Mail::raw("Click the following link to reset your password: $resetLink", function ($message) use ($request) {
+        //     $message->to($request->email)
+        //             ->from('no-reply@medicalhub.com', 'MedicalHub') 
+        //             ->subject('Password Reset');
+        // });
 
-        // Check if token is valid within 60 minutes
         $resetRequest = DB::table('password_resets')
             ->where('email', $request->email)
             ->where('token', $request->token)
-            ->where('created_at', '>=', Carbon::now()->subMinutes(60)) 
+            ->where('created_at', '>=', Carbon::now()->subMinutes(30)) 
             ->first();
 
         if (!$resetRequest) {
             return response()->json(['message' => 'Invalid or expired reset token.', 'status' => false], 400);
         }
 
-        // Update password
         User::where('email', $request->email)->update([
             'password' => Hash::make($request->password),
         ]);
 
-        // Remove token from database
         DB::table('password_resets')->where('email', $request->email)->delete();
 
         return response()->json([
