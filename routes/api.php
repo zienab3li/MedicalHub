@@ -106,4 +106,8 @@ Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescriptio
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
+
+
 

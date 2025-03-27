@@ -12,10 +12,16 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
-    }
+    public function getAllCategories()
+{
+        $categories = Category::all();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Categories retrieved successfully',
+            'data' => $categories
+        ]);
+}
 
     /**
      * Show the form for creating a new resource.
@@ -62,7 +68,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return response()->json([
+            'status' => 200,
+            'data' => $category
+        ]);
     }
 
     /**
