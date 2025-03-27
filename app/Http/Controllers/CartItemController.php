@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class CartItemController extends Controller
 {
 
-
     public function addToCart(Request $request)
     {
         $request->validate([
@@ -102,15 +101,6 @@ class CartItemController extends Controller
             'message' => 'Cart cleared successfully'
         ]);
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.

@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
@@ -75,8 +76,16 @@ Route::prefix('auth')->group(function () {
 
 
 // products Routes
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/category/{category_id}', [ProductController::class, 'show']);
+// Route::get('/products', [ProductController::class, 'index']);
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']); // Get all products
+    Route::post('/', [ProductController::class, 'store']); // Create a product
+    Route::get('/{id}', [ProductController::class, 'showProduct']); // Get single product
+    Route::post('/{product}', [ProductController::class, 'update']); // Update product
+    Route::delete('/{product}', [ProductController::class, 'destroy']); // Delete product
+    Route::get('/category/{category_id}', [ProductController::class, 'show']); // show products related to specific category
+
+});
 
 // cart Routes
 Route::post('/cart', [CartItemController::class, 'addToCart']);
@@ -87,8 +96,14 @@ Route::delete('/cart', [CartItemController::class, 'clearCart']);
 
 
 //prescriptions routes
-Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 // Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+//     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 
 // });
+
+// categories Routes     => only for admins
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::post('categories/{category}', [CategoryController::class, 'update']);
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
