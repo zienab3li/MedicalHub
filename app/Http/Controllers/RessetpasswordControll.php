@@ -27,7 +27,7 @@ class RessetpasswordControll extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        $resetLink = url("/api/password/reset?token=$token&email=" . urlencode($request->email));
+        $resetLink = url("/api/password/update?token=$token&email=" . urlencode($request->email));
 
         Mail::send('emails.reset_password', ['resetLink' => $resetLink], function ($message) use ($request) {
             $message->to($request->email)
