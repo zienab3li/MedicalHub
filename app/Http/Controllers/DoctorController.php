@@ -14,11 +14,23 @@ class DoctorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():JsonResponse
-    {
-        $doctors = Doctor::with('clinic')->get();
-        return response()->json(["data"=>$doctors],201);
+    // public function index():JsonResponse
+    // {
+    //     $doctors = Doctor::with('clinic')->get();
+    //     return response()->json(["data"=>$doctors],201);
+    // }
+    public function index(Request $request): JsonResponse
+{
+    $query = Doctor::with('clinic');
+
+    if ($request->has('role')) {
+        $query->where('role', $request->role); // 'human' or 'vet'
     }
+
+    $doctors = $query->get();
+    return response()->json(["data" => $doctors], 200);
+}
+
 
     /**
      * Show the form for creating a new resource.
