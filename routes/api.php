@@ -72,6 +72,7 @@ Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor log
 Route::prefix('user')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+    Route::get('/users', [AuthController::class, 'users']);
 });
 
 
