@@ -16,8 +16,8 @@ use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessetpasswordControll;
-
-
+use App\Http\Controllers\ServiceBookingController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
 
 // Route::get('/user', function (Request $request) {
@@ -64,6 +64,8 @@ Route::apiResource('clinics',ClinicController::class);
 // Doctor routes
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 Route::apiResource('appointments', AppointmentController::class); // appointments routes
+Route::apiResource('services', ServiceController::class);
+Route::apiResource('servicesbooking', ServiceBookingController::class);
 
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
