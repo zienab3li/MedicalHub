@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
@@ -62,6 +63,7 @@ Route::apiResource('clinics',ClinicController::class);
 
 // Doctor routes
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
+Route::apiResource('appointments', AppointmentController::class); // appointments routes
 
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login

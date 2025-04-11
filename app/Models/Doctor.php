@@ -32,4 +32,11 @@ class Doctor extends Authenticatable
     public function clinic(){
         return $this->belongsTo(Clinic::class);
     }
+    // App\Models\Doctor.php
+
+public function appointments()
+{
+    return $this->hasMany(Appointment::class);
+}
+
 }
