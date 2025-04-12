@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
@@ -14,7 +16,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RessetpasswordControll;
+use App\Http\Controllers\ServiceBookingController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
 
 // Route::get('/user', function (Request $request) {
@@ -34,8 +38,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //dashboard
     Route::get('/dashboard/stats', [DashboardController::class, 'getStats'])->name('dashboard');
-
+  //cart orders
     Route::apiResource('orders',OrderController::class);
+    Route::apiResource('orders', OrderController::class);
+
     Route::apiResource('posts',PostController::class);
     Route::apiResource('comments',CommentController::class);
 
@@ -50,11 +56,17 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AdminController::class, 'login']);   
 });
 
+Route::post('/password/reset-link', [RessetpasswordControll::class, 'sendResetLink']);
+Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword']);
+
  // clinic routes
 Route::apiResource('clinics',ClinicController::class);
 
 // Doctor routes
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
+Route::apiResource('appointments', AppointmentController::class); // appointments routes
+Route::apiResource('services', ServiceController::class);
+Route::apiResource('servicesbooking', ServiceBookingController::class);
 
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
@@ -65,6 +77,7 @@ Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor log
 Route::prefix('user')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+    Route::get('/users', [AuthController::class, 'users']);
 });
 
 
@@ -94,7 +107,23 @@ Route::put('/cart/{id}', [CartItemController::class, 'updateCart']);
 Route::delete('/cart/{id}', [CartItemController::class, 'removeFromCart']);
 Route::delete('/cart', [CartItemController::class, 'clearCart']);
 
-
+//cart route 
+// Route::prefix('cart')->group(function () {
+   
+//     Route::get('/', [CartController::class, 'index']);
+    
+    
+//     Route::post('/', [CartController::class, 'store']);
+    
+   
+//     Route::put('/{id}', [CartController::class, 'update']);
+    
+//     Route::delete('/{id}', [CartController::class, 'destroy']);
+    
+   
+//     // Route::get('/total', [CartController::class, 'total']); 
+//     // Route::delete('/', [CartController::class, 'empty']); 
+// });
 //prescriptions routes
 Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 // Route::middleware('auth:sanctum')->group(function () {
