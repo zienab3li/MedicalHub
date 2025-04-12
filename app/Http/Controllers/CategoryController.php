@@ -41,6 +41,8 @@ class CategoryController extends Controller
             'name' => 'required|string',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'type' => 'required|in:human,vet',
+
         ]);
 
         $imagePath = null;
@@ -52,6 +54,7 @@ class CategoryController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'image' => $imagePath,
+            'type' => $request->type,
         ]);
 
         return response()->json([
@@ -73,6 +76,24 @@ class CategoryController extends Controller
             'data' => $category
         ]);
     }
+    public function getCategoriesByType($type)
+{
+    if (!in_array($type, ['human', 'vet'])) {
+        return response()->json([
+            'status' => 400,
+            'message' => 'Invalid category type'
+        ]);
+    }
+
+    $categories = Category::where('type', $type)->get();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Categories retrieved successfully',
+        'data' => $categories
+    ]);
+}
+
 
     /**
      * Show the form for editing the specified resource.
