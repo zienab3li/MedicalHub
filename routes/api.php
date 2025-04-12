@@ -97,6 +97,7 @@ Route::prefix('products')->group(function () {
     Route::post('/{product}', [ProductController::class, 'update']); // Update product
     Route::delete('/{product}', [ProductController::class, 'destroy']); // Delete product
     Route::get('/category/{category_id}', [ProductController::class, 'show']); // show products related to specific category
+    Route::get('/type/{type}', [ProductController::class, 'showHumanProducts']);
 
 });
 
@@ -135,4 +136,10 @@ Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescriptio
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('categories/{category}', [CategoryController::class, 'update']);
 Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
+Route::get('/categories/type/{type}', [CategoryController::class, 'getCategoriesByType']);
+
+
+
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -105,7 +106,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return response()->json([
+            'status' => 200,
+            'message' => 'Product details',
+            'data' => $product
+        ]);
     }
 
     /**
@@ -144,6 +149,45 @@ class ProductController extends Controller
             'data' => $product
         ]);
     }
+
+
+public function showHumanProducts($type)
+{
+    // $products = Product::whereHas('category', function ($query) {
+    //     $query->where('type', 'human');
+    // })->with('category')->get();
+
+    // if ($products->isEmpty()) {
+    //     return response()->json([
+    //         'status' => 404,
+    //         'message' => 'No human products found',
+    //         'data' => []
+    //     ]);
+    // }
+
+    // return response()->json([
+    //     'status' => 200,
+    //     'message' => 'Human Products List',
+    //     'data' => $products
+    // ]);
+
+    if (!in_array($type, ['human', 'vet'])) {
+        return response()->json([
+            'status' => 400,
+            'message' => 'Invalid category type'
+        ], 400);
+    }
+
+    $products = Product::whereHas('category', function ($query) use ($type) {
+        $query->where('type', $type);
+    })->get();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Products retrieved successfully',
+        'data' => $products
+    ]);
+}
 
     /**
      * Remove the specified resource from storage.
