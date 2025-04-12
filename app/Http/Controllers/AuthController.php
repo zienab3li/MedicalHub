@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserRegistered;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
@@ -27,6 +28,8 @@ class AuthController extends Controller
         $user = User::create($data);
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        event(new UserRegistered($user));
 
         return response()->json([
             'message' => 'User registered successfully',
@@ -85,5 +88,14 @@ class AuthController extends Controller
         Auth::user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    public function users(){
+        $users = User::all();
+        return response()->json([
+            'message' => 'users',
+            'users'   => $users
+        ], 200);
+
     }
 }
