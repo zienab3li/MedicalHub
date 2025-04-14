@@ -24,8 +24,8 @@ class DatabaseSeeder extends Seeder
             // ClinicSeeder::class,
             // DoctorSeeder::class,
             // CategorySeeder::class,
-            // ProductSeeder::class,
-            ServicesSeeder::class
+            ProductSeeder::class,
+            // ServicesSeeder::class
         ]);
     }
 

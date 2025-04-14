@@ -4,14 +4,26 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Product;
+use App\Models\Pharmacy;
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
+        // Ensure a default pharmacy exists
+        $pharmacy = Pharmacy::firstOrCreate(
+            ['id' => 1],
+            [
+                'name' => 'Main Pharmacy',
+                'location' => 'Downtown',
+                'type' => 'human',
+            ]
+        );
+
         $products = [
             [
                 'category_id' => 1,
+                'pharmacy_id' => $pharmacy->id,
                 'name' => 'Heart Monitor',
                 'description' => 'Advanced heart rate and ECG monitoring device.',
                 'image' => 'heart_monitor.jpg',
@@ -20,43 +32,21 @@ class ProductSeeder extends Seeder
             ],
             [
                 'category_id' => 2,
-                'name' => 'Dental Kit',
-                'description' => 'Professional dental care kit for home use.',
-                'image' => 'dental_kit.jpg',
-                'price' => 399.50,
-                'stock' => 25,
+                'pharmacy_id' => $pharmacy->id,
+                'name' => 'Pain Reliever',
+                'description' => 'Effective relief for headaches and muscle pain.',
+                'image' => 'pain_reliever.jpg',
+                'price' => 19.99,
+                'stock' => 200,
             ],
             [
-                'category_id' => 3,
-                'name' => 'Baby Thermometer',
-                'description' => 'Infrared thermometer for babies and children.',
-                'image' => 'baby_thermometer.jpg',
-                'price' => 149.99,
-                'stock' => 15,
-            ],
-            [
-                'category_id' => 4,
-                'name' => 'Skin Care Cream',
-                'description' => 'Dermatologically tested cream for sensitive skin.',
-                'image' => 'skin_care.jpg',
-                'price' => 89.00,
-                'stock' => 30,
-            ],
-            [
-                'category_id' => 5,
-                'name' => 'Neuro Stimulator',
-                'description' => 'Used in neurological rehabilitation.',
-                'image' => 'neuro_stimulator.jpg',
-                'price' => 5299.00,
-                'stock' => 5,
-            ],
-            [
-                'category_id' => 6,
-                'name' => 'Pet Vaccine Pack',
-                'description' => 'Full vaccine kit for dogs and cats.',
-                'image' => 'pet_vaccine.jpg',
-                'price' => 299.99,
-                'stock' => 20,
+                'category_id' => 1,
+                'pharmacy_id' => $pharmacy->id,
+                'name' => 'Blood Pressure Cuff',
+                'description' => 'Digital monitor for measuring blood pressure.',
+                'image' => 'bp_cuff.jpg',
+                'price' => 89.99,
+                'stock' => 50,
             ],
         ];
 
