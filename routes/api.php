@@ -63,6 +63,7 @@ Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword'
 Route::apiResource('clinics',ClinicController::class);
 
 // Doctor routes
+Route::post('/doctors/update', [DoctorController::class, 'update']);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 Route::apiResource('appointments', AppointmentController::class); // appointments routes
 Route::apiResource('services', ServiceController::class);
