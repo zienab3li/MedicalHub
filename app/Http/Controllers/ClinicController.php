@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clinic;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ClinicController extends Controller
 {
@@ -28,15 +29,34 @@ class ClinicController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request):JsonResponse
-    {
-        $request->validate([
-            'name'=>'required|string|max:255',
-            'description'=>'required|string|max:255'
-        ]);
-        $clinic=Clinic::create($request->all());
-        return response()->json(["data"=>$clinic],201);
+    // public function store(Request $request):JsonResponse
+    // {
+    //     $request->validate([
+    //         'name'=>'required|string|max:255',
+    //         'description'=>'required|string|max:255'
+    //     ]);
+    //     $clinic=Clinic::create($request->all());
+    //     return response()->json(["data"=>$clinic],201);
+    // }
+
+    public function store(Request $request): JsonResponse
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+    ]);
+
+    $data = $request->all();
+
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('clinics', 'public');
     }
+
+    $clinic = Clinic::create($data);
+
+    return response()->json(["data" => $clinic], 201);
+}
 
     /**
      * Display the specified resource.
@@ -57,15 +77,38 @@ class ClinicController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Clinic $clinic):JsonResponse
-    {
-        $request->validate([
-            'name'=>'required|string|max:255',
-            'description'=>'required|string|max:255'
-        ]);
-        $clinic->update($request->all());
-        return response()->json(["data"=>$clinic],200);
+    // public function update(Request $request, Clinic $clinic):JsonResponse
+    // {
+    //     $request->validate([
+    //         'name'=>'required|string|max:255',
+    //         'description'=>'required|string|max:255'
+    //     ]);
+    //     $clinic->update($request->all());
+    //     return response()->json(["data"=>$clinic],200);
+    // }
+
+    public function update(Request $request, Clinic $clinic): JsonResponse
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $data = $request->all();
+
+    if ($request->hasFile('image')) {
+        if ($clinic->image && Storage::disk('public')->exists($clinic->image)) {
+            Storage::disk('public')->delete($clinic->image);
+        }
+
+        $data['image'] = $request->file('image')->store('clinics', 'public');
     }
+
+    $clinic->update($data);
+
+    return response()->json(['data' => $clinic], 200);
+}
 
     /**
      * Remove the specified resource from storage.
