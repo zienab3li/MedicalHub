@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use VetSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,14 +25,15 @@ class DatabaseSeeder extends Seeder
             // ClinicSeeder::class,
             // DoctorSeeder::class,
 
-            CategorySeeder::class,
-            ProductSeeder::class,
+            // CategorySeeder::class,
+            // ProductSeeder::class,
             // ServicesSeeder::class
 
             // CategorySeeder::class,
             // ProductSeeder::class,
             // ServicesSeeder::class,
-            CartSeeder::class,
+            // CartSeeder::class,
+            VetSeeder::class,
 
         ]);
     }
