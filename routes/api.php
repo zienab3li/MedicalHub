@@ -20,6 +20,7 @@ use App\Http\Controllers\RessetpasswordControll;
 use App\Http\Controllers\ServiceBookingController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\VetController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -63,7 +64,7 @@ Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword'
 Route::apiResource('clinics',ClinicController::class);
 
 // Doctor routes
-Route::post('/doctors/update', [DoctorController::class, 'update']);
+Route::apiResource('vets', VetController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 Route::apiResource('appointments', AppointmentController::class); // appointments routes
 Route::apiResource('services', ServiceController::class);
