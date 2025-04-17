@@ -21,7 +21,7 @@ class ServiceController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'name' => 'required|string|min:5|max:150|regex:/^[A-Za-z\s]+$/|unique:services,name,',
+        'name' => 'nullable|string|min:5|max:150|regex:/^[A-Za-z\s]+$/|unique:services,name,',
         'description' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
         'price' => 'nullable|numeric',
@@ -60,15 +60,48 @@ class ServiceController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $service = Service::findOrFail($id);
+{
+    $service = Service::findOrFail($id);
 
-        $service->update($request->only([
-            'name', 'description', 'image', 'price', 'duration', 'is_active', 'instructions'
-        ]));
+    $validatedData = $request->validate([
+        'name' => 'nullable|string|min:5|max:150|regex:/^[A-Za-z\s]+$/|unique:services,name,' . $id,
+        'description' => 'nullable|string',
+        'image' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
+        'price' => 'nullable|numeric',
+        'duration' => 'nullable|integer',
+        'is_active' => 'boolean',
+        'instructions' => 'nullable|string',
+    ]);
 
-        return response()->json($service);
+    $serviceData = $request->only([
+        'name', 'description', 'price', 'duration', 'is_active', 'instructions'
+    ]);
+
+    if ($request->hasFile('image')) {
+        try {
+            // Delete old image if exists
+            $this->deleteOldImage($service);
+
+            $extension = $request->image->getClientOriginalExtension();
+            $imageName = time() . '.' . $extension;
+            $imagePath = $request->image->storeAs('service_images', $imageName, 'public');
+            $serviceData['image'] = 'storage/' . $imagePath;
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to upload image'], 500);
+        }
+    } elseif ($request->has('image') && $request->image === null) {
+        // Allow clearing the image
+        $this->deleteOldImage($service);
+        $serviceData['image'] = null;
     }
+
+    $service->update($serviceData);
+
+    return response()->json([
+        'message' => 'Service updated successfully',
+        'data' => $service
+    ], 200);
+}
 
     
     
