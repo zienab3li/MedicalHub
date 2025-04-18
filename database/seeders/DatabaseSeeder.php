@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,10 +23,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             // ClinicSeeder::class,
-            // DoctorSeeder::class,
+            DoctorSeeder::class,
             // CategorySeeder::class,
             // ProductSeeder::class,
-            // ServicesSeeder::class
+            // ServicesSeeder::class,
+            // CartSeeder::class,
+
         ]);
     }
 
