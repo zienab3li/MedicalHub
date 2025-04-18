@@ -61,10 +61,15 @@ class ClinicController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Clinic $clinic):JsonResponse
-    {
-        return response()->json(["data"=>$clinic],201);
-    }
+    public function show(Clinic $clinic): JsonResponse
+{
+    $clinic->load('doctors');
+
+    return response()->json([
+        "data" => $clinic
+    ], 200);
+}
+
 
     /**
      * Show the form for editing the specified resource.

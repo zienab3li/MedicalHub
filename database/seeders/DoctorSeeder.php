@@ -3,15 +3,17 @@
 namespace Database\Seeders;
 
 use App\Models\Clinic;
-use Illuminate\Database\Seeder;
 use App\Models\Doctor;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Vet;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class DoctorSeeder extends Seeder
 {
     public function run(): void
     {
+
         $doctors = [
             [
                 'name' => 'Dr. Ahmed Hassan',
@@ -24,7 +26,7 @@ class DoctorSeeder extends Seeder
                 'address' => 'City A',
                 'phone' => '01234567890',
                 'image' => 'doctor1.jpg',
-                'clinic_type' => 'human',
+                'clinic_id' => 1,
             ],
             [
                 'name' => 'Dr. Sara Youssef',
@@ -37,7 +39,7 @@ class DoctorSeeder extends Seeder
                 'address' => 'City B',
                 'phone' => '01234567891',
                 'image' => 'doctor2.jpg',
-                'clinic_type' => 'human',
+                'clinic_id' => 2,
             ],
             [
                 'name' => 'Dr. Mostafa Nabil',
@@ -50,7 +52,7 @@ class DoctorSeeder extends Seeder
                 'address' => 'City C',
                 'phone' => '01234567892',
                 'image' => 'doctor3.jpg',
-                'clinic_type' => 'human',
+                'clinic_id' => 3,
             ],
             [
                 'name' => 'Dr. Mariam Khaled',
@@ -63,7 +65,7 @@ class DoctorSeeder extends Seeder
                 'address' => 'City D',
                 'phone' => '01234567893',
                 'image' => 'doctor4.jpg',
-                'clinic_type' => 'human',
+                'clinic_id' => 4,
             ],
             [
                 'name' => 'Dr. Amr Adel',
@@ -76,33 +78,33 @@ class DoctorSeeder extends Seeder
                 'address' => 'City E',
                 'phone' => '01234567894',
                 'image' => 'doctor5.jpg',
-                'clinic_type' => 'human',
-            ],
-            [
-                'name' => 'Dr. Rania Fathy',
-                'email' => 'rania.fathy@example.com',
-                'password' => Hash::make('password123'),
-                'specialization' => 'Veterinarian',
-                'bio' => 'Animal health and surgery specialist.',
-                'clinic_address' => '303 Pet St, City F',
-                'role' => 'vet',
-                'address' => 'City F',
-                'phone' => '01234567895',
-                'image' => 'doctor6.jpg',
-                'clinic_type' => 'vet', 
+                'clinic_id' => 5,
             ],
         ];
 
+
         foreach ($doctors as $doctorData) {
-            if ($doctorData['clinic_type'] == 'clinic') {
-                $clinic = Clinic::find($doctorData['clinic_id']); 
-            } else {
-                $clinic = Vet::find($doctorData['clinic_id']); 
+            $originalPath = public_path('images/human/' . $doctorData['image']);
+            $storagePath = 'doctors/' . $doctorData['image'];
+
+            if (File::exists($originalPath)) {
+                Storage::disk('public')->put($storagePath, File::get($originalPath));
             }
 
-            $doctorData['clinic_id'] = $clinic->id;
-
-            Doctor::create($doctorData);
+            Doctor::create([
+                'name' => $doctorData['name'],
+                'email' => $doctorData['email'],
+                'password' => $doctorData['password'],
+                'specialization' => $doctorData['specialization'],
+                'bio' => $doctorData['bio'],
+                'clinic_address' => $doctorData['clinic_address'],
+                'role' => $doctorData['role'],
+                'address' => $doctorData['address'],
+                'phone' => $doctorData['phone'],
+                'image' => $storagePath,
+                'clinic_id' => $doctorData['clinic_id'],
+            ]);
+            
         }
     }
 }
