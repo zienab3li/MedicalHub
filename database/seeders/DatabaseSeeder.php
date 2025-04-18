@@ -22,12 +22,12 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // ClinicSeeder::class,
+             ClinicSeeder::class,
             DoctorSeeder::class,
-            // CategorySeeder::class,
-            // ProductSeeder::class,
-            // ServicesSeeder::class,
-            // CartSeeder::class,
+             CategorySeeder::class,
+            ProductSeeder::class,
+             ServicesSeeder::class,
+            CartSeeder::class,
 
         ]);
     }
