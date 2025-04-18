@@ -19,6 +19,7 @@ use App\Http\Controllers\RessetpasswordControll;
 
 
 use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\PaymentController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -123,6 +124,13 @@ Route::prefix('checkout')->group(function () {
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
+
+// Payment routes
+Route::prefix('payments')->group(function () {
+    Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
+    Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
+});
+
 //prescriptions routes
 Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
 // Route::middleware('auth:sanctum')->group(function () {
