@@ -65,28 +65,64 @@ class AuthController extends Controller
     }
 
 
+    // public function login(UserLoginRequest $request): JsonResponse
+    // {
+    //     if (!Auth::attempt($request->only('email', 'password'))) {
+    //         return response()->json([
+    //             'message' => 'Invalid credentials'
+    //         ], 401);
+    //     }
+
+    //     $user = Auth::user();
+    //     $token = $user->createToken('auth_token')->plainTextToken;
+
+    //     return response()->json([
+    //         'message' => 'Login successful',
+    //         'user' => $user,
+    //         'token' => $token,
+    //     ]);
+    // }
+
+
+
     public function login(UserLoginRequest $request): JsonResponse
-    {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'message' => 'Invalid credentials'
-            ], 401);
-        }
-
-        $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
-
+{
+    if (!Auth::attempt($request->only('email', 'password'))) {
         return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'token' => $token,
-        ]);
+            'message' => 'Invalid credentials'
+        ], 401);
     }
+
+    $user = Auth::user();
+    $token = $user->createToken('auth_token')->plainTextToken;
+
+    $userData = [
+        'id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'image' => $user->image ? asset('storage/' . $user->image) : null,
+    ];
+
+    return response()->json([
+        'message' => 'Login successful',
+        'user' => $userData,
+        'token' => $token,
+    ]);
+}
 
     public function logout(): JsonResponse
     {
         Auth::user()->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    public function users(){
+        $users = User::all();
+        return response()->json([
+            'message' => 'users',
+            'users'   => $users
+        ], 200);
+
     }
 }

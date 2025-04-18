@@ -52,4 +52,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // App\Models\User.php
+
+public function appointments()
+{
+    return $this->hasMany(Appointment::class);
+}
+
 }

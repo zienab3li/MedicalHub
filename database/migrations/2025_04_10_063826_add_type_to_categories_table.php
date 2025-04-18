@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('pharmacy_id')->nullable()->constrained('pharmacies')->cascadeOnDelete();
-            //
+        Schema::table('categories', function (Blueprint $table) {
+            $table->enum('type', ['human', 'vet'])->default('human');
         });
     }
 
@@ -22,9 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('products', function (Blueprint $table) {
-            
-            $table->dropForeign('pharmacy_id');
+        Schema::table('categories', function (Blueprint $table) {
+            //
         });
     }
 };

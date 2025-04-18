@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
@@ -16,10 +18,14 @@ use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RessetpasswordControll;
-
-
+use App\Http\Controllers\ServiceBookingController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
+<<<<<<< HEAD
 use App\Http\Controllers\PaymentController;
+=======
+use App\Http\Controllers\VetController;
+>>>>>>> 2957089d748d1e77bddce7d9830102b6b67ee6f7
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -63,7 +69,11 @@ Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword'
 Route::apiResource('clinics', ClinicController::class);
 
 // Doctor routes
+Route::apiResource('vets', VetController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
+Route::apiResource('appointments', AppointmentController::class); // appointments routes
+Route::apiResource('services', ServiceController::class);
+Route::apiResource('servicesbooking', ServiceBookingController::class);
 
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
@@ -74,6 +84,7 @@ Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor log
 Route::prefix('user')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+    Route::get('/users', [AuthController::class, 'users']);
 });
 
 
@@ -85,8 +96,17 @@ Route::prefix('auth')->group(function () {
 
 
 // products Routes
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/category/{category_id}', [ProductController::class, 'show']);
+// Route::get('/products', [ProductController::class, 'index']);
+Route::prefix('products')->group(function () {
+    Route::get('/', [ProductController::class, 'index']); // Get all products
+    Route::post('/', [ProductController::class, 'store']); // Create a product
+    Route::get('/{id}', [ProductController::class, 'showProduct']); // Get single product
+    Route::post('/{product}', [ProductController::class, 'update']); // Update product
+    Route::delete('/{product}', [ProductController::class, 'destroy']); // Delete product
+    Route::get('/category/{category_id}', [ProductController::class, 'show']); // show products related to specific category
+    Route::get('/type/{type}', [ProductController::class, 'showHumanProducts']);
+
+});
 
 // cart Routes
 // Route::post('/cart', [CartItemController::class, 'addToCart']);
@@ -132,8 +152,20 @@ Route::prefix('payments')->group(function () {
 });
 
 //prescriptions routes
-Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 // Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); // رفع الوصفة
+//     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 
 // });
+
+// categories Routes     => only for admins
+Route::post('/categories', [CategoryController::class, 'store']);
+Route::post('categories/{category}', [CategoryController::class, 'update']);
+Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+Route::get('/categories', [CategoryController::class, 'getAllCategories']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
+Route::get('/categories/type/{type}', [CategoryController::class, 'getCategoriesByType']);
+
+
+
+
