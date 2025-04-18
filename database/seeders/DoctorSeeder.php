@@ -26,7 +26,7 @@ class DoctorSeeder extends Seeder
                 'image' => 'doctor1.jpg',
             ],
             [
-                'name' => 'Dr. Sara Youssef',
+                'name' => 'Dr. Sarah Youssef',
                 'email' => 'sara.youssef@example.com',
                 'password' => Hash::make('password123'),
                 'clinic_id' => 6,
