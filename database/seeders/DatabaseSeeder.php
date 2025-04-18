@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use VetSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // ClinicSeeder::class,
+            ClinicSeeder::class,
             // DoctorSeeder::class,
 
             // CategorySeeder::class,
@@ -33,7 +33,6 @@ class DatabaseSeeder extends Seeder
             // ProductSeeder::class,
             // ServicesSeeder::class,
             // CartSeeder::class,
-            VetSeeder::class,
 
         ]);
     }
