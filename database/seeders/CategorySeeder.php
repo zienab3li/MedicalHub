@@ -2,48 +2,29 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = [
-            [
-                'name' => 'Cardiology',
-                'description' => 'Heart-related treatments and checkups.',
-                'image' => 'cardiology.jpg',
-            ],
-            [
-                'name' => 'Dentistry',
-                'description' => 'Dental care and oral surgery.',
-                'image' => 'dentistry.jpg',
-            ],
-            [
-                'name' => 'Pediatrics',
-                'description' => 'Child health and diseases.',
-                'image' => 'pediatrics.jpg',
-            ],
-            [
-                'name' => 'Dermatology',
-                'description' => 'Skin care and treatment.',
-                'image' => 'dermatology.jpg',
-            ],
-            [
-                'name' => 'Neurology',
-                'description' => 'Nervous system diagnosis and treatment.',
-                'image' => 'neurology.jpg',
-            ],
-            [
-                'name' => 'Veterinary',
-                'description' => 'Animal healthcare and surgery.',
-                'image' => 'veterinary.jpg',
-            ],
-        ];
+        Category::create([
+            'name' => 'Human Medicine',
+            'type' => 'human',
+            'description' => 'Medicines for human use'
+        ]);
 
-        foreach ($categories as $category) {
-            Category::create($category);
-        }
+        Category::create([
+            'name' => 'Veterinary Medicine',
+            'type' => 'veterinary',
+            'description' => 'Medicines for animal use'
+        ]);
+
+        Category::create([
+            'name' => 'Medical Equipment',
+            'type' => 'equipment',
+            'description' => 'Medical devices and equipment'
+        ]);
     }
 }

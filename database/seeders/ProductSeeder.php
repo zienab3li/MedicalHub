@@ -2,56 +2,64 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Product;
-use App\Models\Pharmacy;
+use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ensure a default pharmacy exists
-        $pharmacy = Pharmacy::firstOrCreate(
-            ['id' => 1],
-            [
-                'name' => 'Main Pharmacy',
-                'location' => 'Downtown',
-                'type' => 'human',
-            ]
-        );
+        $humanCategory = Category::where('type', 'human')->first();
+        $veterinaryCategory = Category::where('type', 'veterinary')->first();
+        $equipmentCategory = Category::where('type', 'equipment')->first();
 
-        $products = [
-            [
-                'category_id' => 1,
-                'pharmacy_id' => $pharmacy->id,
-                'name' => 'Heart Monitor',
-                'description' => 'Advanced heart rate and ECG monitoring device.',
-                'image' => 'heart_monitor.jpg',
-                'price' => 2499.99,
-                'stock' => 10,
-            ],
-            [
-                'category_id' => 2,
-                'pharmacy_id' => $pharmacy->id,
-                'name' => 'Pain Reliever',
-                'description' => 'Effective relief for headaches and muscle pain.',
-                'image' => 'pain_reliever.jpg',
-                'price' => 19.99,
-                'stock' => 200,
-            ],
-            [
-                'category_id' => 1,
-                'pharmacy_id' => $pharmacy->id,
-                'name' => 'Blood Pressure Cuff',
-                'description' => 'Digital monitor for measuring blood pressure.',
-                'image' => 'bp_cuff.jpg',
-                'price' => 89.99,
-                'stock' => 50,
-            ],
-        ];
+        // Human Medicine Products
+        Product::create([
+            'name' => 'Paracetamol 500mg',
+            'description' => 'Pain reliever and fever reducer',
+            'price' => 5.99,
+            'stock' => 100,
+            'category_id' => $humanCategory->id,
+            'image' => 'paracetamol.jpg'
+        ]);
 
-        foreach ($products as $product) {
-            Product::create($product);
-        }
+        Product::create([
+            'name' => 'Ibuprofen 400mg',
+            'description' => 'Anti-inflammatory and pain reliever',
+            'price' => 7.99,
+            'stock' => 80,
+            'category_id' => $humanCategory->id,
+            'image' => 'ibuprofen.jpg'
+        ]);
+
+        // Veterinary Medicine Products
+        Product::create([
+            'name' => 'Dog Flea Treatment',
+            'description' => 'Monthly flea prevention for dogs',
+            'price' => 24.99,
+            'stock' => 50,
+            'category_id' => $veterinaryCategory->id,
+            'image' => 'flea_treatment.jpg'
+        ]);
+
+        // Medical Equipment
+        Product::create([
+            'name' => 'Digital Thermometer',
+            'description' => 'Fast and accurate temperature measurement',
+            'price' => 12.99,
+            'stock' => 30,
+            'category_id' => $equipmentCategory->id,
+            'image' => 'thermometer.jpg'
+        ]);
+
+        Product::create([
+            'name' => 'Blood Pressure Monitor',
+            'description' => 'Automatic blood pressure measurement device',
+            'price' => 49.99,
+            'stock' => 20,
+            'category_id' => $equipmentCategory->id,
+            'image' => 'bp_monitor.jpg'
+        ]);
     }
 }
