@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Cart;
 
+use App\Models\Cart;
 use App\Models\Product;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
@@ -48,11 +49,18 @@ class CartModelRepository implements CartRepository
         CartItem::where('user_id', Auth::id())->delete();
     }
     
+    // public function total()
+    // {
+    //     $items = $this->get();
+    //     return $items->sum(function($item) {
+    //         return $item->quantity * $item->product->price;
+    //     });
+    // }
     public function total()
     {
-        $items = $this->get();
-        return $items->sum(function($item) {
-            return $item->quantity * $item->product->price;
-        });
+        return Cart::where('user_id', Auth::id())
+            ->join('products', 'products.id', '=', 'carts.product_id')
+            ->selectRaw('SUM(products.price * carts.quantity) as total')
+            ->value('total');
     }
 } 
