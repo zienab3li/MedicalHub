@@ -77,6 +77,7 @@ class CheckOutController extends Controller
         $cart = $cartRepository->get();
         return response()->json([
             'cart' => $cart,
+            
             'message' => 'Cart retrieved successfully'
         ]);
         

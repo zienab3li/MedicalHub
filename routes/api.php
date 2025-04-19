@@ -21,11 +21,10 @@ use App\Http\Controllers\RessetpasswordControll;
 use App\Http\Controllers\ServiceBookingController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\PaymentController;
-=======
+
 use App\Http\Controllers\VetController;
->>>>>>> 2957089d748d1e77bddce7d9830102b6b67ee6f7
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -139,7 +138,7 @@ Route::apiResource('cart', CartController::class)
 
 //CHeckout route
 Route::prefix('checkout')->group(function () {
-    // Route::post('/', [OrderController::class, 'store']);
+     Route::post('/', [OrderController::class, 'store']);
     Route::get('/', [OrderController::class, 'show']);
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
