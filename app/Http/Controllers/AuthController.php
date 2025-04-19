@@ -14,6 +14,23 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+    public function updateStatus(Request $request, $id)
+{
+    $user = User::findOrFail($id);
+
+    $request->validate([
+        'status' => 'required|in:active,archived',
+    ]);
+
+    $user->status = $request->status;
+    $user->save();
+
+    return response()->json([
+        'message' => "status has been updated",
+        'user' => $user
+    ]);
+}
+
     public function register(UserRegisterRequest $request): JsonResponse
     {
         $data = $request->validated();
@@ -84,32 +101,40 @@ class AuthController extends Controller
     // }
 
 
-
     public function login(UserLoginRequest $request): JsonResponse
-{
-    if (!Auth::attempt($request->only('email', 'password'))) {
+    {
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json([
+                'message' => 'Invalid credentials'
+            ], 401);
+        }
+    
+        $user = Auth::user();
+    
+        if ($user->status !== 'active') {
+            Auth::logout();
+    
+            return response()->json([
+                'message' => "acount not active"
+            ], 403);
+        }
+    
+        $token = $user->createToken('auth_token')->plainTextToken;
+    
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'image' => $user->image ? asset('storage/' . $user->image) : null,
+        ];
+    
         return response()->json([
-            'message' => 'Invalid credentials'
-        ], 401);
+            'message' => 'Login successful',
+            'user' => $userData,
+            'token' => $token,
+        ]);
     }
-
-    $user = Auth::user();
-    $token = $user->createToken('auth_token')->plainTextToken;
-
-    $userData = [
-        'id' => $user->id,
-        'name' => $user->name,
-        'email' => $user->email,
-        'image' => $user->image ? asset('storage/' . $user->image) : null,
-    ];
-
-    return response()->json([
-        'message' => 'Login successful',
-        'user' => $userData,
-        'token' => $token,
-    ]);
-}
-
+    
     public function logout(): JsonResponse
     {
         Auth::user()->tokens()->delete();

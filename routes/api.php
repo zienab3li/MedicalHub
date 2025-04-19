@@ -56,6 +56,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
+Route::put('/users/{id}/status', [AuthController::class, 'updateStatus']);
+
+
 Route::prefix('admin')->group(function () {
     Route::post('/register', [AdminController::class, 'register']);
     Route::post('/login', [AdminController::class, 'login']);
