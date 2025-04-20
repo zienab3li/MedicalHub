@@ -25,9 +25,7 @@ use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\VetController;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
+
 
 
 
@@ -106,41 +104,14 @@ Route::prefix('products')->group(function () {
     Route::delete('/{product}', [ProductController::class, 'destroy']); // Delete product
     Route::get('/category/{category_id}', [ProductController::class, 'show']); // show products related to specific category
     Route::get('/type/{type}', [ProductController::class, 'showHumanProducts']);
-
 });
 
-// cart Routes
-// Route::post('/cart', [CartItemController::class, 'addToCart']);
-// Route::get('/cart', [CartItemController::class, 'viewCart']);
-// Route::put('/cart/{id}', [CartItemController::class, 'updateCart']);
-// Route::delete('/cart/{id}', [CartItemController::class, 'removeFromCart']);
-// Route::delete('/cart', [CartItemController::class, 'clearCart']);
-
-//cart route 
-// Route::prefix('cart')->group(function () {
-
-//     Route::get('/', [CartController::class, 'index']);
 
 
-//     Route::post('/', [CartController::class, 'store']);
-
-
-//     Route::put('/{id}', [CartController::class, 'update']);
-
-//     Route::delete('/{id}', [CartController::class, 'destroy']);
-
-
-//     // Route::get('/total', [CartController::class, 'total']); 
-//     // Route::delete('/', [CartController::class, 'empty']); 
-// });
-// Route::apiResource('cart', CartController::class)
-//     ->except(['show']) 
-//     ->parameters(['cart' => 'id']);
-   
 
 //CHeckout route
 Route::prefix('checkout')->group(function () {
-     Route::post('/', [OrderController::class, 'store']);
+    Route::post('/', [OrderController::class, 'store']);
     Route::get('/', [OrderController::class, 'show']);
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
@@ -153,7 +124,7 @@ Route::prefix('payments')->group(function () {
 });
 
 //prescriptions routes
-Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
+Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']);
 // Route::middleware('auth:sanctum')->group(function () {
 //     Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']); 
 
@@ -179,4 +150,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/cart/clear', [CartItemController::class, 'clearCart']);
     Route::get('/cart/total', [CartItemController::class, 'cartTotal']);
 });
-
