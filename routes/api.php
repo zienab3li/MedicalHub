@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\DoctorRequestController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\VetController;
+
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -76,6 +78,7 @@ Route::apiResource('doctors', DoctorController::class); // Add doctor routes
 Route::apiResource('appointments', AppointmentController::class); // appointments routes
 Route::apiResource('services', ServiceController::class);
 Route::apiResource('servicesbooking', ServiceBookingController::class);
+Route::apiResource('doctorrequest', DoctorRequestController::class);
 
 // Public routes (no authentication required)
 Route::post('/doctors/login', [DoctorController::class, 'login']); // Doctor login
