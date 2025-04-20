@@ -21,7 +21,6 @@ use App\Http\Controllers\RessetpasswordControll;
 use App\Http\Controllers\ServiceBookingController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
-
 use App\Http\Controllers\PaymentController;
 
 use App\Http\Controllers\VetController;
@@ -134,9 +133,9 @@ Route::prefix('products')->group(function () {
 //     // Route::get('/total', [CartController::class, 'total']); 
 //     // Route::delete('/', [CartController::class, 'empty']); 
 // });
-Route::apiResource('cart', CartController::class)
-    ->except(['show']) 
-    ->parameters(['cart' => 'id']);
+// Route::apiResource('cart', CartController::class)
+//     ->except(['show']) 
+//     ->parameters(['cart' => 'id']);
    
 
 //CHeckout route
@@ -170,4 +169,14 @@ Route::get('/categories/type/{type}', [CategoryController::class, 'getCategories
 
 
 
+
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/cart/add', [CartItemController::class, 'addToCart']);
+    Route::get('/cart', [CartItemController::class, 'viewCart']);
+    Route::put('/cart/update/{product_id}', [CartItemController::class, 'updateCart']);
+    Route::delete('/cart/remove/{id}', [CartItemController::class, 'removeFromCart']);
+    Route::delete('/cart/clear', [CartItemController::class, 'clearCart']);
+    Route::get('/cart/total', [CartItemController::class, 'cartTotal']);
+});
 
