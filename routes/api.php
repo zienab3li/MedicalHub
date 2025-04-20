@@ -119,7 +119,7 @@ Route::prefix('products')->group(function () {
 //CHeckout route
 Route::prefix('checkout')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
-    Route::get('/', [OrderController::class, 'show']);
+    Route::get('/{id}', [OrderController::class, 'show']);  // تأكد من إضافة {id} هنا
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
