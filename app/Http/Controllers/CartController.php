@@ -24,7 +24,7 @@ class CartController extends Controller
         $item = $this->repository->get();
         $total = $this->repository->total();
         return response()->json([
-            'success'=>true,
+            'success'=>"get sucess",
             'data'=>[
                 'items'=>$item,
                 'total'=>$total
@@ -37,19 +37,37 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'product_id'=>['required'|'integer'|'exists:products,id'],
+        // $request->validate([
+        //     'product_id'=>'required,integer,exists:products,id',
+        //     'quantity' => 'nullable,integer,min:1'
+        // ]);
+        // $product=Product::findOrFail($request->product_id);
+        // $quantity = $request->quantity;
+        // $cartItem = $this->repository->add($product,$quantity);
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'add to cart',
+        //     'data' => $cartItem
+        // ], 201);
+        $validatedData = $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
             'quantity' => 'nullable|integer|min:1'
         ]);
-        $product=Product::findOrFail($request->product_id);
-        $quantity = $request->quantity;
-        $cartItem = $this->repository->add($product,$quantity);
+    
+        
+        $product = Product::findOrFail($validatedData['product_id']);
+        
+        $quantity = $validatedData['quantity'] ?? 1; 
+    
+        $cartItem = $this->repository->add($product, $quantity);
+    
         return response()->json([
             'success' => true,
-            'message' => 'add to cart',
+            'message' => 'تمت الإضافة إلى السلة بنجاح',
             'data' => $cartItem
         ], 201);
     }
+    
 
     /**
      * Display the specified resource.
@@ -65,7 +83,7 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'product_id'=>['required'|'integer'|'exists:products,id'],
+            'product_id'=>'required|integer|exists:products,id',
             'quantity' => 'nullable|integer|min:1'
         ]);
         $product=Product::findOrFail($request->product_id);

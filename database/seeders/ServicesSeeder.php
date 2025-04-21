@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Service;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ServicesSeeder extends Seeder
 {
@@ -39,8 +41,23 @@ class ServicesSeeder extends Seeder
             ],
         ];
 
-        foreach ($services as $service) {
-            Service::create($service);
+        foreach ($services as $serviceData) {
+            $originalPath = public_path('images/services/' . $serviceData['image']);
+            $storagePath = 'services/' . $serviceData['image'];
+
+            if (File::exists($originalPath)) {
+                Storage::disk('public')->put($storagePath, File::get($originalPath));
+            }
+
+            Service::create([
+                'name' => $serviceData['name'],
+                'description' => $serviceData['description'],
+                'image' => $storagePath,
+                'price' => $serviceData['price'],
+                'duration' => $serviceData['duration'],
+                'is_active' => $serviceData['is_active'],
+                'instructions' => $serviceData['instructions'],
+            ]);
         }
     }
 }
