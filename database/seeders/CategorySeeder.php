@@ -84,6 +84,56 @@ class CategorySeeder extends Seeder
                 'image' => 'Medications & Treatments.jpg',
                 'type' => 'human',
             ],
+
+            // vet categories
+            [
+                'name' => 'Pet Food',
+                'description' => 'Nutritious food products specially formulated for pets like dogs, cats, and birds.',
+                'image' => 'Pet Food.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Grooming',
+                'description' => 'Grooming products for pets including shampoos, conditioners, and brushes.',
+                'image' => 'Pet Grooming.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Vitamins & Supplements',
+                'description' => 'Vitamins and nutritional supplements to support the health of pets.',
+                'image' => 'Pet Vitamins & Supplements.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Toys',
+                'description' => 'Fun and engaging toys designed to keep pets active and happy.',
+                'image' => 'Pet Toys.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Hygiene',
+                'description' => 'Hygiene products for pets including wipes, ear cleaners, and dental care items.',
+                'image' => 'Pet Hygiene.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet First Aid',
+                'description' => 'First aid kits and supplies tailored for emergency care of pets.',
+                'image' => 'Pet First Aid.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Medications',
+                'description' => 'Medicines for treating various pet illnesses and health conditions.',
+                'image' => 'Pet Medications.jpg',
+                'type' => 'vet',
+            ],
+            [
+                'name' => 'Pet Training',
+                'description' => 'Training tools and accessories to help with behavior and discipline.',
+                'image' => 'Pet Training.jpg',
+                'type' => 'vet',
+            ],
         ];
 
         foreach ($categories as $categoryData) {
@@ -97,7 +147,7 @@ class CategorySeeder extends Seeder
             Category::create([
                 'name' => $categoryData['name'],
                 'description' => $categoryData['description'],
-                'image' => $categoryData['image'], // Just the image name
+                'image' => $destinationPath,
                 'type' => $categoryData['type'],
             ]);
         }
