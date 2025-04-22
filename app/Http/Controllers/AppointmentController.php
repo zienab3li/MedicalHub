@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -37,26 +38,35 @@ class AppointmentController extends Controller
             'appointment_time' => 'required',
             'notes' => 'nullable|string'
         ]);
-
+        $appointmentDateTime = Carbon::parse($request->appointment_date . ' ' . $request->appointment_time);
+        if ($appointmentDateTime->lt(Carbon::now())) {
+            return response()->json(['error' => 'You cannot book an appointment in the past.'], 422);
+        }
+        
+        $requestedDateTime = Carbon::parse($request->appointment_date . ' ' . $request->appointment_time);
+        $startBuffer = $requestedDateTime->copy()->subMinutes(30)->format('H:i:s');
+        $endBuffer = $requestedDateTime->copy()->addMinutes(30)->format('H:i:s');
         
         $doctorBooked = Appointment::where('doctor_id', $request->doctor_id)
             ->where('appointment_date', $request->appointment_date)
-            ->where('appointment_time', $request->appointment_time)
+            ->whereBetween('appointment_time', [$startBuffer, $endBuffer])
             ->exists();
-
+        
         if ($doctorBooked) {
-            return response()->json(['error' => 'Doctor is already booked at this time.'], 422);
+            return response()->json(['error' => 'Doctor has another appointment too close to this time. Please choose a different slot.'], 422);
         }
+        
 
         
         $patientHasAppointment = Appointment::where('user_id', $request->user_id)
-            ->where('appointment_date', $request->appointment_date)
-            ->where('appointment_time', $request->appointment_time)
-            ->exists();
-
-        if ($patientHasAppointment) {
-            return response()->json(['error' => 'You already have an appointment at this time.'], 422);
-        }
+        ->where('appointment_date', $request->appointment_date)
+        ->whereBetween('appointment_time', [$startBuffer, $endBuffer])
+        ->exists();
+    
+    if ($patientHasAppointment) {
+        return response()->json(['error' => 'You have another appointment too close to this time.'], 422);
+    }
+    
 
         $appointment = Appointment::create([
             'user_id' => $request->user_id,

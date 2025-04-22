@@ -27,12 +27,14 @@ class RessetpasswordControll extends Controller
             'created_at' => Carbon::now(),
         ]);
 
-        $resetLink = url("/api/password/update?token=$token&email=" . urlencode($request->email));
+        $frontendUrl = config('app.frontend_url');
+        $resetLink = "$frontendUrl/reset-password?token=$token&email=" . urlencode($request->email);
+
 
         Mail::send('emails.reset_password', ['resetLink' => $resetLink], function ($message) use ($request) {
             $message->to($request->email)
-                    ->from('no-reply@medicalhub.com', 'MedicalHub')
-                    ->subject('Password Reset');
+                ->from('no-reply@medicalhub.com', 'MedicalHub')
+                ->subject('Password Reset');
         });
 
         return response()->json([
@@ -41,42 +43,68 @@ class RessetpasswordControll extends Controller
         ], 200);
     }
 
+    // public function updatePassword(Request $request)
+    // {
+    //     $request->validate([
+    //         'token'    => 'required',
+    //         'email'    => 'required|email|exists:users,email',
+    //         'password' => 'required|min:6|confirmed',
+    //     ]);
+
+    //     // Mail::raw("Click the following link to reset your password: $resetLink", function ($message) use ($request) {
+    //     //     $message->to($request->email)
+    //     //             ->from('no-reply@medicalhub.com', 'MedicalHub') 
+    //     //             ->subject('Password Reset');
+    //     // });
+
+    //     $resetRequest = DB::table('password_resets')
+    //         ->where('email', $request->email)
+    //         ->where('token', $request->token)
+    //         ->where('created_at', '>=', Carbon::now()->subMinutes(30))
+    //         ->first();
+
+    //     if (!$resetRequest) {
+    //         return response()->json(['message' => 'Invalid or expired reset token.', 'status' => false], 400);
+    //     }
+
+    //     User::where('email', $request->email)->update([
+    //         'password' => Hash::make($request->password),
+    //     ]);
+
+    //     DB::table('password_resets')->where('email', $request->email)->delete();
+
+    //     return response()->json([
+    //         'message' => 'Password has been reset successfully.',
+    //         'status'  => true,
+    //     ], 200);
+    // }
+
     public function updatePassword(Request $request)
-    {
-        $request->validate([
-            'token'    => 'required',
-            'email'    => 'required|email|exists:users,email',
-            'password' => 'required|min:6|confirmed',
-        ]);
+{
+    $request->validate([
+        'token'    => 'required',
+        'password' => 'required|min:6|confirmed',
+    ]);
 
-        // Mail::raw("Click the following link to reset your password: $resetLink", function ($message) use ($request) {
-        //     $message->to($request->email)
-        //             ->from('no-reply@medicalhub.com', 'MedicalHub') 
-        //             ->subject('Password Reset');
-        // });
+    $resetRequest = DB::table('password_resets')
+        ->where('token', $request->token)
+        ->where('created_at', '>=', Carbon::now()->subMinutes(30))
+        ->first();
 
-        $resetRequest = DB::table('password_resets')
-            ->where('email', $request->email)
-            ->where('token', $request->token)
-            ->where('created_at', '>=', Carbon::now()->subMinutes(30)) 
-            ->first();
-
-        if (!$resetRequest) {
-            return response()->json(['message' => 'Invalid or expired reset token.', 'status' => false], 400);
-        }
-
-        User::where('email', $request->email)->update([
-            'password' => Hash::make($request->password),
-        ]);
-
-        DB::table('password_resets')->where('email', $request->email)->delete();
-
-        return response()->json([
-            'message' => 'Password has been reset successfully.',
-            'status'  => true,
-        ], 200);
+    if (!$resetRequest) {
+        return response()->json(['message' => 'Invalid or expired reset token.', 'status' => false], 400);
     }
+
+    User::where('email', $resetRequest->email)->update([
+        'password' => Hash::make($request->password),
+    ]);
+
+    DB::table('password_resets')->where('email', $resetRequest->email)->delete();
+
+    return response()->json([
+        'message' => 'Password has been reset successfully.',
+        'status'  => true,
+    ], 200);
 }
 
-
-
+}
