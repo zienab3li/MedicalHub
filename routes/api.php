@@ -119,7 +119,7 @@ Route::prefix('products')->group(function () {
 //CHeckout route
 Route::prefix('checkout')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
-    Route::get('/{id}', [OrderController::class, 'show']);  // تأكد من إضافة {id} هنا
+    Route::get('/{id}', [OrderController::class, 'show']); 
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
@@ -127,7 +127,7 @@ Route::prefix('checkout')->group(function () {
 // Payment routes
 Route::prefix('payments')->group(function () {
     Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
-    Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
+    Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
 });
 
 //prescriptions routes
