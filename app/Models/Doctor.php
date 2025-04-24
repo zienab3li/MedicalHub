@@ -37,5 +37,16 @@ public function appointments()
 {
     return $this->hasMany(Appointment::class);
 }
+// App\Models\Doctor.php
+
+public function feedbacks()
+{
+    return $this->hasMany(Feedback::class);
+}
+// In Doctor.php
+public function averageRating()
+{
+    return $this->feedbacks()->avg('rating');
+}
 
 }

@@ -14,6 +14,7 @@ use App\Models\Prescription;
 use App\Http\Controllers\ClinicController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\DoctorRequestController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PrescriptionController;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('posts', PostController::class);
     Route::apiResource('comments', CommentController::class);
-
+   
 
     Route::post('/doctors/logout', [DoctorController::class, 'logout']); // Doctor logout
 
@@ -157,3 +158,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/cart/clear', [CartItemController::class, 'clearCart']);
     Route::get('/cart/total', [CartItemController::class, 'cartTotal']);
 });
+ Route::post('/feedback', [FeedbackController::class, 'store']);
+    Route::get('/feedback', [FeedbackController::class, 'index']);
