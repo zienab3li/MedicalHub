@@ -24,6 +24,7 @@ use App\Http\Controllers\ServiceBookingController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ChatController;
 
 use App\Http\Controllers\VetController;
 
@@ -157,6 +158,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/cart/remove/{id}', [CartItemController::class, 'removeFromCart']);
     Route::delete('/cart/clear', [CartItemController::class, 'clearCart']);
     Route::get('/cart/total', [CartItemController::class, 'cartTotal']);
+
+    // Chat routes
+    Route::post('/chat/start', [ChatController::class, 'startConversation']);
+    Route::get('/chat/conversations', [ChatController::class, 'getConversations']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
+    Route::put('/chat/messages/{messageId}/read', [ChatController::class, 'markAsRead']);
+    Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
 });
  Route::post('/feedback', [FeedbackController::class, 'store']);
     Route::get('/feedback', [FeedbackController::class, 'index']);
