@@ -59,5 +59,11 @@ public function appointments()
 {
     return $this->hasMany(Appointment::class);
 }
+// App\Models\User.php
+
+public function feedbacks()
+{
+    return $this->hasMany(Feedback::class);
+}
 
 }

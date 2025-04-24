@@ -37,13 +37,6 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ServicesSeeder::class,
             CartSeeder::class,
-            // ClinicSeeder::class,
-            // DoctorSeeder::class,
-            // CategorySeeder::class,
-            // ProductSeeder::class,
-            ServicesSeeder::class,
-            // CartSeeder::class,
-
 
 
         ]);

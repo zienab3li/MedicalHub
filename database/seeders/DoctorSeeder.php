@@ -29,7 +29,7 @@ class DoctorSeeder extends Seeder
                 'clinic_id' => 1,
             ],
             [
-                'name' => 'Dr. Sara Youssef',
+                'name' => 'Dr. Sarah Youssef',
                 'email' => 'sara.youssef@example.com',
                 'password' => Hash::make('password123'),
                 'specialization' => 'Dentist',
