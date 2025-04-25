@@ -127,10 +127,20 @@ Route::prefix('checkout')->group(function () {
 });
 
 // Payment routes
-Route::prefix('payments')->group(function () {
-    Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
-    Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
-});
+// Route::prefix('payments')->group(function () {
+//     Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
+//     Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
+// });
+// Route::post('/payments/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
+// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
+// Route::get('/payments/{order}/stripe', [PaymentController::class, 'create'])->name('payments.stripe.form');
+
+Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
+
+Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
+// في routes/api.php
+// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
+
 
 //prescriptions routes
 Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']);

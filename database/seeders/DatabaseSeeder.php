@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
            // ClinicSeeder::class,
             //DoctorSeeder::class,
            // CategorySeeder::class,
-           // ProductSeeder::class,
+           ProductSeeder::class,
             //ServicesSeeder::class,
             //CartSeeder::class,
-            HumanPostsSeeder::class,
+            // HumanPostsSeeder::class,
           
             //HumanCommentsSeeder::class,
             //HumanSectionsSeeder::class,
