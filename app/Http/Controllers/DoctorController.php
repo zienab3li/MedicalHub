@@ -130,18 +130,35 @@ class DoctorController extends Controller
         return response()->json(['message' => 'Doctor deleted successfully'], 201);
     }
 
+    /**
+     * Handle doctor login.
+     */
     public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string', // إلغاء شرط min:8
         ]);
 
         $doctor = Doctor::where('email', $request->email)->first();
+
+        // التحقق من وجود الدكتور وصحة الباسورد
+        if (!$doctor || !Hash::check($request->password, $doctor->password)) {
+            return response()->json(['message' => 'Invalid email or password'], 401);
+        }
+
         $token = $doctor->createToken('doctor-token')->plainTextToken;
-        return response()->json(["message" => "Doctor logged in successfully", "data" => $doctor, "token" => $token], 200);
+
+        return response()->json([
+            "message" => "Doctor logged in successfully",
+            "doctor" => $doctor,
+            "token" => $token
+        ], 200);
     }
 
+    /**
+     * Handle doctor logout.
+     */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->tokens()->delete();
