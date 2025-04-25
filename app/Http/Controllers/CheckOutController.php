@@ -42,7 +42,7 @@ class CheckOutController extends Controller
             }
             foreach($request->post('addr') as $type => $address){
                 $address['type'] = $type;
-                $order->addresses()->create( $address);
+                $order->address()->create( $address);
             }
             // $cartRepository->empty();
             DB::commit();
@@ -86,19 +86,5 @@ class CheckOutController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+   
 }

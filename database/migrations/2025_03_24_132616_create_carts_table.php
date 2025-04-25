@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->uuid('id')->unique();
-            $table->uuid('cookie_id');
             $table->foreignId('user_id')
                 ->nullable()
                 ->constrained('users')

@@ -10,12 +10,12 @@ class OrderItem extends Pivot
 {
     use HasFactory;
 public $incrementing = true;
-    protected $fillable = [
-        'order_id',
-        'product_id',
-        'quantity',
-        'price',
-    ];
+    // protected $fillable = [
+    //     'order_id',
+    //     'product_id',
+    //     'quantity',
+    //     'price',
+    // ];
     public $timestamps = false;
     protected $table = 'order_items';
 
