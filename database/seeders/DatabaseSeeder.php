@@ -36,8 +36,12 @@ class DatabaseSeeder extends Seeder
             //CategorySeeder::class,
     //  ProductSeeder::class,
            // ServicesSeeder::class,
+            //DoctorSeeder::class,
+           // CategorySeeder::class,
+           ProductSeeder::class,
+            //ServicesSeeder::class,
             //CartSeeder::class,
-            HumanPostsSeeder::class,
+            // HumanPostsSeeder::class,
           
             //HumanCommentsSeeder::class,
             //HumanSectionsSeeder::class,
