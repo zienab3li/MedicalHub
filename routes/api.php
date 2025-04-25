@@ -179,3 +179,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
  Route::post('/feedback', [FeedbackController::class, 'store']);
     Route::get('/feedback', [FeedbackController::class, 'index']);
+
+    Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
