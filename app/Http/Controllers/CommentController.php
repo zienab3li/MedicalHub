@@ -5,74 +5,93 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index():JsonResponse
+    public function index(): JsonResponse
     {
-      $comments = Comment::with('post','user')->get();
-      return response()->json(['data'=>$comments],200); 
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $comments = Comment::with('post', 'user')->get();
+        return response()->json(['data' => $comments], 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request):JsonResponse
+    public function store(Request $request): JsonResponse
     {
-    $request->validate([
-        'post_id'=>'required|exists:posts,id',
-        'user_id'=>'required|exists:users,id',
-        'comment'=>'required|string',
-    ]);
-    $comment= Comment::create($request->all());
-    return response()->json(['data'=>$comment],201);
+        try {
+            $request->validate([
+                'post_id' => 'required|exists:posts,id',
+                'comment' => 'required|string',
+            ]);
+
+            if (!Auth::check()) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+
+            $comment = Comment::create([
+                'post_id' => $request->post_id,
+                'user_id' => Auth::id(),
+                'comment' => $request->comment,
+            ]);
+
+            return response()->json(['data' => $comment->load('post', 'user')], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment):JsonResponse
+    public function show(Comment $comment): JsonResponse
     {
-        return response()->json(['data'=>$comment->load('post','user')],200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
+        return response()->json(['data' => $comment->load('post', 'user')], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Comment $comment):JsonResponse
+    public function update(Request $request, Comment $comment): JsonResponse
     {
-        $request->validate([
-            'comment'=>'sometimes|string',
-        ]);
-        $comment->update($request->all());
-        return response()->json(['data'=>$comment],200);
+        try {
+            $request->validate([
+                'comment' => 'sometimes|string',
+            ]);
+
+            if (Auth::id() !== $comment->user_id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            $comment->update($request->all());
+            return response()->json(['data' => $comment->load('post', 'user')], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json(['message' => 'Validation failed', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment):JsonResponse
+    public function destroy(Comment $comment): JsonResponse
     {
-        $comment->delete();
-        return response()->json(['message'=>'comment deleted successfully'],200);
+        try {
+            if (Auth::id() !== $comment->user_id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            $comment->delete();
+            return response()->json(['message' => 'Comment deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'An error occurred', 'error' => $e->getMessage()], 500);
+        }
     }
 }
