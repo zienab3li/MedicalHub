@@ -29,6 +29,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\VetController;
 
 
+use App\Http\Controllers\DoctorAppointmentController;
 
 
 // Route::get('/user', function (Request $request) {
@@ -74,7 +75,19 @@ Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword'
 
 // clinic routes
 Route::apiResource('clinics', ClinicController::class);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
+// Routes for AppointmentController (Admin and User)
+Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
+Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy']);
+
+// Route for DoctorAppointmentController (Doctor Dashboard)
+Route::get('/doctor-appointments', [DoctorAppointmentController::class, 'index']);
 // Doctor routes
 Route::apiResource('vets', VetController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
