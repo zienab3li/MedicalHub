@@ -79,13 +79,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 // Routes for AppointmentController (Admin and User)
 Route::get('/appointments', [AppointmentController::class, 'index']);
 Route::post('/appointments', [AppointmentController::class, 'store']);
 Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
 Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
 Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy']);
-
+Route::put('/doctor-patients/{patientId}/notes', [DoctorAppointmentController::class, 'updatePatientNotes']);
+// Routes for DoctorAppointmentController (Doctor Dashboard)
+Route::get('/doctor-appointments', [DoctorAppointmentController::class, 'index']);
+Route::get('/doctor-patients', [DoctorAppointmentController::class, 'patients']);
 // Route for DoctorAppointmentController (Doctor Dashboard)
 Route::get('/doctor-appointments', [DoctorAppointmentController::class, 'index']);
 // Doctor routes
