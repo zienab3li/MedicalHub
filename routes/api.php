@@ -176,8 +176,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
     Route::put('/chat/messages/{messageId}/read', [ChatController::class, 'markAsRead']);
     Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
+    Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
 });
  Route::post('/feedback', [FeedbackController::class, 'store']);
     Route::get('/feedback', [FeedbackController::class, 'index']);
 
-    Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
+    
