@@ -8,6 +8,7 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\NewMessage;
+use App\Models\User;
 
 class ChatController extends Controller
 {
@@ -201,4 +202,26 @@ class ChatController extends Controller
             'message' => 'Conversation ended successfully'
         ]);
     }
+    public function getUsersWithAppointments()
+    {
+        $doctorId = Auth::id(); // the logged-in doctor
+    
+        // Get unique users who have active (non-cancelled) appointments with this doctor
+        $users = User::whereIn('id', function ($query) use ($doctorId) {
+            $query->select('user_id')
+                ->from('appointments')
+                ->where('doctor_id', $doctorId)
+                ->where('status', '!=', 'cancelled');
+        })
+        ->with(['conversations' => function($query) use ($doctorId) {
+            $query->where('doctor_id', $doctorId)
+                ->with(['messages' => function($q) {
+                    $q->orderBy('created_at', 'desc');
+                }]);
+        }])
+        ->get();
+    
+        return response()->json($users);
+    }
+
 } 

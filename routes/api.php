@@ -29,6 +29,7 @@ use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\VetController;
 
 
+use App\Http\Controllers\DoctorAppointmentController;
 
 
 // Route::get('/user', function (Request $request) {
@@ -74,7 +75,27 @@ Route::post('/password/update', [RessetpasswordControll::class, 'updatePassword'
 
 // clinic routes
 Route::apiResource('clinics', ClinicController::class);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
+
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+// Routes for AppointmentController (Admin and User)
+Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+Route::put('/appointments/{id}', [AppointmentController::class, 'update']);
+Route::delete('/appointments/{id}', [AppointmentController::class, 'destroy']);
+Route::put('/doctor-patients/{patientId}/notes', [DoctorAppointmentController::class, 'updatePatientNotes']);
+// Routes for DoctorAppointmentController (Doctor Dashboard)
+Route::get('/doctor-appointments', [DoctorAppointmentController::class, 'index']);
+Route::get('/doctor-patients', [DoctorAppointmentController::class, 'patients']);
+// Route for DoctorAppointmentController (Doctor Dashboard)
+Route::get('/doctor-appointments', [DoctorAppointmentController::class, 'index']);
 // Doctor routes
 Route::apiResource('vets', VetController::class);
 Route::apiResource('doctors', DoctorController::class); // Add doctor routes
@@ -127,10 +148,20 @@ Route::prefix('checkout')->group(function () {
 });
 
 // Payment routes
-Route::prefix('payments')->group(function () {
-    Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
-    Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
-});
+// Route::prefix('payments')->group(function () {
+//     Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
+//     Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
+// });
+// Route::post('/payments/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
+// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
+// Route::get('/payments/{order}/stripe', [PaymentController::class, 'create'])->name('payments.stripe.form');
+
+Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
+
+Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
+// في routes/api.php
+// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
+
 
 //prescriptions routes
 Route::post('/prescriptions', [PrescriptionController::class, 'uploadPrescription']);
@@ -166,6 +197,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
     Route::put('/chat/messages/{messageId}/read', [ChatController::class, 'markAsRead']);
     Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
+    Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
 });
  Route::post('/feedback', [FeedbackController::class, 'store']);
     Route::get('/feedback', [FeedbackController::class, 'index']);
+
+    

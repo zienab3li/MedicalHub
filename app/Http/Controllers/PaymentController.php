@@ -74,4 +74,46 @@ class PaymentController extends Controller
             'message' => 'Payment failed'
         ], 400);
     }
+
+
+//     public function confirm(Request $request, Order $order)
+// {
+//     $stripe = new StripeClient(config('services.stripe.secret_key'));
+    
+//     // الحصول على payment_intent من query parameters
+//     $paymentIntentId = $request->query('payment_intent');
+    
+//     if (!$paymentIntentId) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Payment intent ID is missing'
+//         ], 400);
+//     }
+
+//     $paymentIntent = $stripe->paymentIntents->retrieve($paymentIntentId);
+
+//     if ($paymentIntent->status === 'succeeded') {
+//         $payment = Payment::where('transaction_id', $paymentIntent->id)->first();
+//         $payment->update([
+//             'status' => 'completed',
+//             'transaction_date' => array_merge($payment->transaction_date, [
+//                 'confirmed' => now()->timestamp
+//             ])
+//         ]);
+
+//         $order->update([
+//             'payment_status' => 'paid'
+//         ]);
+
+//         return response()->json([
+//             'success' => true,
+//             'message' => 'Payment completed successfully'
+//         ]);
+//     }
+
+//     return response()->json([
+//         'success' => false,
+//         'message' => 'Payment failed'
+//     ], 400);
+// }
 }
