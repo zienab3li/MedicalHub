@@ -25,7 +25,7 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ChatController;
-
+use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\VetController;
 
 
@@ -120,8 +120,8 @@ Route::prefix('products')->group(function () {
 
 //CHeckout route
 Route::prefix('checkout')->group(function () {
-    Route::post('/', [OrderController::class, 'store']);
-    Route::get('/{id}', [OrderController::class, 'show']); 
+    Route::post('/', [CheckOutController::class, 'store']);
+    Route::get('/{id}', [CheckOutController::class, 'show']); 
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
