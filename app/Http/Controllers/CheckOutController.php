@@ -29,7 +29,7 @@ class CheckOutController extends Controller
         DB::beginTransaction();
         try{
             $order=Order::create([
-                'user_id' => Auth::id(),
+                'user_id' => 2,
                'payment_method' => $request->payment_method,
             ]);
             foreach($cartRepository->get() as $item){

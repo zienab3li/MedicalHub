@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\DashboardController;
@@ -141,10 +142,10 @@ Route::prefix('products')->group(function () {
 
 //CHeckout route
 Route::prefix('checkout')->group(function () {
-    Route::post('/', [OrderController::class, 'store']);
-    Route::get('/{id}', [OrderController::class, 'show']); 
-    Route::put('/{id}', [OrderController::class, 'update']);
-    Route::delete('/{id}', [OrderController::class, 'destroy']);
+    Route::post('/', [CheckOutController::class, 'store']);
+    Route::get('/{id}', [CheckOutController::class, 'show']); 
+    Route::put('/{id}', [CheckOutController::class, 'update']);
+    Route::delete('/{id}', [CheckOutController::class, 'destroy']);
 });
 
 // Payment routes
