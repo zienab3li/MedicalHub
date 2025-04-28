@@ -30,7 +30,7 @@ use App\Http\Controllers\VetController;
 
 
 use App\Http\Controllers\DoctorAppointmentController;
-
+use App\Http\Controllers\SearchController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -199,7 +199,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
     Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
 });
- Route::post('/feedback', [FeedbackController::class, 'store']);
-    Route::get('/feedback', [FeedbackController::class, 'index']);
+Route::post('/feedback', [FeedbackController::class, 'store']);
+Route::get('/feedback', [FeedbackController::class, 'index']);
+
+// search route
+Route::get('/search', [SearchController::class, 'search']);
 
     
