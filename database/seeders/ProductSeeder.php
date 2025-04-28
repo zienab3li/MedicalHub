@@ -20,6 +20,7 @@ class ProductSeeder extends Seeder
                 'image' => 'aloe vera gel.png',
                 'price' => 35.99,
                 'stock' => 150,
+                'quantity' => 55,
             ],
             [
                 'category_id' => 1,
@@ -28,6 +29,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Vitamin C Serum.png',
                 'price' => 89.99,
                 'stock' => 75,
+                'quantity' => 45,
             ],
             [
                 'category_id' => 1,
@@ -36,6 +38,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Foaming Facial Cleanser.png',
                 'price' => 45.50,
                 'stock' => 0,
+                'quantity' => 60,
             ],
             [
                 'category_id' => 1,
@@ -44,6 +47,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Hydrating Facial Cream.png',
                 'price' => 65.00,
                 'stock' => 90,
+                'quantity' => 30,
             ],
             [
                 'category_id' => 1,
@@ -52,6 +56,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Micellar Water.png',
                 'price' => 32.99,
                 'stock' => 200,
+                'quantity' => 100,
             ],
             [
                 'category_id' => 1,
@@ -60,6 +65,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Sunscreen.png',
                 'price' => 55.00,
                 'stock' => 110,
+                'quantity' => 20,
             ],
             [
                 'category_id' => 1,
@@ -68,6 +74,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Night Repair Cream.png',
                 'price' => 78.50,
                 'stock' => 25,
+                'quantity' => 15,
             ],
             [
                 'category_id' => 1,
@@ -76,6 +83,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Exfoliating Facial Scrub.png',
                 'price' => 42.99,
                 'stock' => 85,
+                'quantity' => 50,
             ],
             [
                 'category_id' => 1,
@@ -84,6 +92,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Under Eye Cream.png',
                 'price' => 59.99,
                 'stock' => 0,
+                'quantity' => 43,
             ],
             [
                 'category_id' => 1,
@@ -92,6 +101,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Facial Toner.png',
                 'price' => 28.50,
                 'stock' => 130,
+                'quantity' => 70,
             ],
             [
                 'category_id' => 1,
@@ -100,6 +110,7 @@ class ProductSeeder extends Seeder
                 'image' => 'Moisturizing Sheet Mask.png',
                 'price' => 15.99,
                 'stock' => 180,
+                'quantity' => 19,
             ],
             [
                 'category_id' => 1,
@@ -108,6 +119,7 @@ class ProductSeeder extends Seeder
                 'image' => 'vaseline.png',
                 'price' => 12.99,
                 'stock' => 250,
+                'quantity' => 10,
             ],
         ];
 
@@ -125,6 +137,7 @@ class ProductSeeder extends Seeder
                 'image' => $destinationPath,
                 'price' => $product['price'],
                 'stock' => $product['stock'],
+                'quantity' => $product['quantity'] ,
             ]);
         }
     }
