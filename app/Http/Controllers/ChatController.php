@@ -8,38 +8,44 @@ use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\NewMessage;
+use App\Models\User;
 
 class ChatController extends Controller
 {
     public function startConversation(Request $request)
     {
         $request->validate([
-            'doctor_id' => 'required|exists:doctors,id'
+            'doctor_id' => 'required|exists:doctors,id',
+            'user_id' => 'sometimes|exists:users,id' // Add this for doctor-initiated chats
         ]);
-
+    
+        // Determine if this is a user or doctor initiating the chat
+        $userId = $request->user_id ?? Auth::id();
+        $doctorId = $request->doctor_id;
+    
         // Check if user has an appointment with the doctor
-        $hasAppointment = Appointment::where('user_id', Auth::id())
-            ->where('doctor_id', $request->doctor_id)
+        $hasAppointment = Appointment::where('user_id', $userId)
+            ->where('doctor_id', $doctorId)
             ->where('status', '!=', 'cancelled')
             ->exists();
-
+    
         if (!$hasAppointment) {
             return response()->json([
                 'message' => 'You must have an appointment with this doctor to start a chat'
             ], 403);
         }
-
+    
         // Check if there's already an active conversation
         $conversation = Conversation::firstOrCreate(
             [
-                'user_id' => Auth::id(),
-                'doctor_id' => $request->doctor_id,
+                'user_id' => $userId,
+                'doctor_id' => $doctorId,
             ],
             [
                 'is_active' => true
             ]
         );
-
+    
         return response()->json([
             'message' => 'Conversation started successfully',
             'data' => $conversation->load('user', 'doctor')
@@ -201,4 +207,26 @@ class ChatController extends Controller
             'message' => 'Conversation ended successfully'
         ]);
     }
+    public function getUsersWithAppointments()
+    {
+        $doctorId = Auth::id(); // the logged-in doctor
+    
+        // Get unique users who have active (non-cancelled) appointments with this doctor
+        $users = User::whereIn('id', function ($query) use ($doctorId) {
+            $query->select('user_id')
+                ->from('appointments')
+                ->where('doctor_id', $doctorId)
+                ->where('status', '!=', 'cancelled');
+        })
+        ->with(['conversations' => function($query) use ($doctorId) {
+            $query->where('doctor_id', $doctorId)
+                ->with(['messages' => function($q) {
+                    $q->orderBy('created_at', 'desc');
+                }]);
+        }])
+        ->get();
+    
+        return response()->json($users);
+    }
+
 } 
