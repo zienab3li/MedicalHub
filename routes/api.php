@@ -31,7 +31,7 @@ use App\Http\Controllers\VetController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('order', [CheckOutController::class, 'store']);
+    // Route::post('order', [CheckOutController::class, 'store']);
 
     //admin routs
     Route::post('/admin/logout', [AdminController::class, 'logout']);
@@ -136,8 +136,6 @@ Route::prefix('products')->group(function () {
 Route::prefix('checkout')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
     Route::get('/{id}', [OrderController::class, 'show']);
-    Route::post('/', [CheckOutController::class, 'store']);
-    Route::get('/{id}', [CheckOutController::class, 'show']); 
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
@@ -183,9 +181,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
     Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
     Route::get('/chat/existing', [ChatController::class, 'checkExistingConversation']);
-
 });
- Route::post('/feedback', [FeedbackController::class, 'store']);
-    Route::get('/feedback', [FeedbackController::class, 'index']);
 
-    
+
+Route::post('/feedback', [FeedbackController::class, 'store']);
+Route::get('/feedback', [FeedbackController::class, 'index']);
