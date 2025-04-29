@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\DB;
 class OrderController extends Controller
 {
     public function index()
-    {
-        $orders = Order::with('items')->paginate(10);
-        return response()->json($orders);
-    }
+{
+    $orders = Order::with(['items', 'user:id,id,name'])->paginate(10);
+    return response()->json($orders);
+}
+
 
     public function store(Request $request)
     {
@@ -153,11 +154,23 @@ class OrderController extends Controller
 
     
 
-    public function show($id)
-    {
-        $order = Order::with('items')->findOrFail($id);
-        return response()->json($order);
-    }
+    // public function show($id)
+    // {
+    //     $order = Order::with('items')->findOrFail($id);
+    //     return response()->json($order);
+    // }
+
+    public function show()
+{
+    $userId = auth()->user()->id;
+
+    $orders = Order::with(['items.product', 'user'])
+        ->where('user_id', $userId)
+        ->paginate(10);
+
+    return response()->json($orders);
+}
+
 
     public function update(Request $request, $id)
     {

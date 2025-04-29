@@ -40,6 +40,8 @@ use App\Http\Controllers\SearchController;
 
 Route::middleware('auth:sanctum')->group(function () {
     // Route::post('order', [CheckOutController::class, 'store']);
+    Route::get('/orders', [OrderController::class, 'index']); 
+    Route::get('/show', [OrderController::class, 'show']); 
 
     //admin routs
     Route::post('/admin/logout', [AdminController::class, 'logout']);
@@ -150,11 +152,9 @@ Route::prefix('products')->group(function () {
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
-    Route::get('/{id}', [OrderController::class, 'show']); 
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
-
 
 
 Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
