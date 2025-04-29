@@ -159,6 +159,10 @@ Route::prefix('checkout')->group(function () {
 Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
 
 Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/posts/inline-image', [PostController::class, 'uploadInlineImage']);
+    Route::apiResource('posts', PostController::class);
+});
 // في routes/api.php
 // Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
 
