@@ -25,27 +25,10 @@ class DatabaseSeeder extends Seeder
 
              ClinicSeeder::class,
            DoctorSeeder::class,
-             //CategorySeeder::class,
-            //ProductSeeder::class,
-            // ServicesSeeder::class,
+             CategorySeeder::class,
+            ProductSeeder::class,
+            ServicesSeeder::class,
            // CartSeeder::class,
-
-
-            ClinicSeeder::class,
-       DoctorSeeder::class,
-            CategorySeeder::class,
-      //ProductSeeder::class,
-          // ServicesSeeder::class,
-           // DoctorSeeder::class,
-           // CategorySeeder::class,
-
-           ProductSeeder::class,
-        ServicesSeeder::class,
-
-          // ProductSeeder::class,
-            //ServicesSeeder::class,
-
-            //CartSeeder::class,
              HumanPostsSeeder::class,
           
            

@@ -26,19 +26,12 @@ use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\VetController;
 
 
-use App\Http\Controllers\DoctorAppointmentController;
-
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-
-
 Route::middleware('auth:sanctum')->group(function () {
+    // Route::post('order', [CheckOutController::class, 'store']);
 
     //admin routs
     Route::post('/admin/logout', [AdminController::class, 'logout']);
@@ -55,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('posts', PostController::class);
     Route::apiResource('comments', CommentController::class);
-   
+
 
     Route::post('/doctors/logout', [DoctorController::class, 'logout']); // Doctor logout
 
@@ -140,24 +133,23 @@ Route::prefix('products')->group(function () {
 
 
 //CHeckout route
-Route::prefix('checkout')->group(function () {
-    Route::post('/', [CheckOutController::class, 'store']);
-    Route::get('/{id}', [CheckOutController::class, 'show']); 
+// Route::prefix('checkout')->group(function () {
+//     Route::post('/', [OrderController::class, 'store']);
+//     Route::get('/{id}', [OrderController::class, 'show']);
+//     Route::put('/{id}', [OrderController::class, 'update']);
+//     Route::delete('/{id}', [OrderController::class, 'destroy']);
+// });
+
+Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [OrderController::class, 'store']);
+    Route::get('/{id}', [OrderController::class, 'show']); 
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
 
-// Payment routes
-// Route::prefix('payments')->group(function () {
-//     Route::post('/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
-//     Route::post('/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
-// });
-// Route::post('/payments/{order}/stripe/intent', [PaymentController::class, 'createStripePaymentIntent'])->name('payments.stripe.intent');
-// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('payments.stripe.confirm');
-// Route::get('/payments/{order}/stripe', [PaymentController::class, 'create'])->name('payments.stripe.form');
+
 
 Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
-
 Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/posts/inline-image', [PostController::class, 'uploadInlineImage']);
@@ -165,6 +157,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 // في routes/api.php
 // Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
+
 
 
 //prescriptions routes
@@ -203,9 +196,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/chat/conversations/{conversationId}/end', [ChatController::class, 'endConversation']);
     Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
     Route::get('/chat/existing', [ChatController::class, 'checkExistingConversation']);
-
 });
- Route::post('/feedback', [FeedbackController::class, 'store']);
-    Route::get('/feedback', [FeedbackController::class, 'index']);
 
-    
+
+Route::post('/feedback', [FeedbackController::class, 'store']);
+Route::get('/feedback', [FeedbackController::class, 'index']);
