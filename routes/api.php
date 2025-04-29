@@ -26,6 +26,7 @@ use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\VetController;
 
@@ -64,6 +65,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 });
+// routes/api.php
+Route::post('/check-coupon', [CouponController::class, 'check']);
+
 
 Route::put('/users/{id}/status', [AuthController::class, 'updateStatus']);
 
@@ -216,3 +220,7 @@ Route::get('/search', [SearchController::class, 'search']);
 
 Route::post('/feedback', [FeedbackController::class, 'store']);
 Route::get('/feedback', [FeedbackController::class, 'index']);
+
+
+
+Route::post('/coupons', [CouponController::class, 'store']);

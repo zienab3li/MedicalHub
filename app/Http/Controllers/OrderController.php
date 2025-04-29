@@ -15,48 +15,116 @@ class OrderController extends Controller
     return response()->json($orders);
 }
 
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'user_id' => 'required|exists:users,id',
+        'status' => 'required|string',
+        'total_price' => 'required|numeric',
+        'payment_method' => 'required|string', 
+        'coupon_code' => 'nullable|string',
+        'items' => 'required|array|min:1',
+        'items.*.product_id' => 'required|exists:products,id',
+        'items.*.quantity' => 'required|integer|min:1',
+        'items.*.price' => 'required|numeric|min:0',
+    ]);
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'status' => 'required|string',
-            'total_price' => 'required|numeric',
-            'payment_method' => 'required|string', 
-            'items' => 'required|array|min:1',
-            'items.*.product_id' => 'required|exists:products,id',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric|min:0',
-        ]);
-        DB::beginTransaction();
-        try {
-            $order = Order::create([
-                'user_id' => $validated['user_id'],
-                'status' => $validated['status'],
-                'total_price' => $validated['total_price'],
-                'payment_method' => $validated['payment_method'] 
-            ]);
-    
-            foreach ($validated['items'] as $item) {
-                $product = Product::find($item['product_id']);
-                if (!$product || $product->stock < $item['quantity']) {
-                    DB::rollBack();
-                    return response()->json(['error' => 'Insufficient stock'], 400);
-                }
-    
-                $order->items()->create($item);
-    
-                $product->stock -= $item['quantity'];
-                $product->save();
+    DB::beginTransaction();
+    try {
+        $discount = 0;
+        $couponCode = $validated['coupon_code'] ?? null;
+
+        if ($couponCode) {
+            $coupon = \App\Models\Coupon::where('code', $couponCode)->where('is_active', true)->first();
+
+            if (!$coupon || !$coupon->isValid()) {
+                return response()->json(['error' => 'Invalid or expired coupon'], 400);
             }
-    
-            DB::commit();
-            return response()->json($order->load('items'), 201);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => 'Failed to create order', 'details' => $e->getMessage()], 500);
+
+            if ($coupon->discount_type === 'percentage') {
+                $discount = $validated['total_price'] * ($coupon->discount_value / 100);
+            } elseif ($coupon->discount_type === 'fixed') {
+                $discount = $coupon->discount_value;
+            }
+
+            $coupon->increment('used_times');
         }
+
+        $finalPrice = $validated['total_price'] - $discount;
+
+        $order = Order::create([
+            'user_id' => $validated['user_id'],
+            'status' => $validated['status'],
+            'payment_method' => $validated['payment_method'],
+            'coupon_code' => $couponCode,
+            'discount' => $discount,
+            'total_price' => max(0, $finalPrice),
+        ]);
+
+        foreach ($validated['items'] as $item) {
+            $product = Product::find($item['product_id']);
+            if (!$product || $product->stock < $item['quantity']) {
+                DB::rollBack();
+                return response()->json(['error' => 'Insufficient stock'], 400);
+            }
+
+            $order->items()->create($item);
+
+            $product->stock -= $item['quantity'];
+            $product->save();
+        }
+
+        DB::commit();
+        return response()->json($order->load('items'), 201);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => 'Failed to create order', 'details' => $e->getMessage()], 500);
     }
+}
+
+
+
+    // public function store(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'user_id' => 'required|exists:users,id',
+    //         'status' => 'required|string',
+    //         'total_price' => 'required|numeric',
+    //         'payment_method' => 'required|string', 
+    //         'items' => 'required|array|min:1',
+    //         'items.*.product_id' => 'required|exists:products,id',
+    //         'items.*.quantity' => 'required|integer|min:1',
+    //         'items.*.price' => 'required|numeric|min:0',
+    //     ]);
+    //     DB::beginTransaction();
+    //     try {
+    //         $order = Order::create([
+    //             'user_id' => $validated['user_id'],
+    //             'status' => $validated['status'],
+    //             'total_price' => $validated['total_price'],
+    //             'payment_method' => $validated['payment_method'] 
+    //         ]);
+    
+    //         foreach ($validated['items'] as $item) {
+    //             $product = Product::find($item['product_id']);
+    //             if (!$product || $product->stock < $item['quantity']) {
+    //                 DB::rollBack();
+    //                 return response()->json(['error' => 'Insufficient stock'], 400);
+    //             }
+    
+    //             $order->items()->create($item);
+    
+    //             $product->stock -= $item['quantity'];
+    //             $product->save();
+    //         }
+    
+    //         DB::commit();
+    //         return response()->json($order->load('items'), 201);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(['error' => 'Failed to create order', 'details' => $e->getMessage()], 500);
+    //     }
+    // }
 
 
 //     public function store(Request $request)

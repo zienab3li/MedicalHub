@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use CouponSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -28,24 +29,21 @@ class DatabaseSeeder extends Seeder
              CategorySeeder::class,
             ProductSeeder::class,
             ServicesSeeder::class,
-           // CartSeeder::class,
-<<<<<<< HEAD
-             HumanPostsSeeder::class,
-=======
+            // CouponSeeder::class,
+            // HumanPostsSeeder::class,
 
 
-           ClinicSeeder::class,
-       // DoctorSeeder::class,
-            //CategorySeeder::class,
-    //  ProductSeeder::class,
-            // ServicesSeeder::class,
-            DoctorSeeder::class,
-            CategorySeeder::class,
-            ProductSeeder::class,
-            ServicesSeeder::class,
-            // CartSeeder::class,
-            HumanPostsSeeder::class,
->>>>>>> search-feature
+    //        ClinicSeeder::class,
+    //    // DoctorSeeder::class,
+    //         //CategorySeeder::class,
+    // //  ProductSeeder::class,
+    //         // ServicesSeeder::class,
+    //         DoctorSeeder::class,
+    //         CategorySeeder::class,
+    //         ProductSeeder::class,
+    //         ServicesSeeder::class,
+    //         // CartSeeder::class,
+    //         HumanPostsSeeder::class,
           
            
 
