@@ -26,7 +26,8 @@ class SearchController extends Controller
             ->orWhere('content', 'like', "%{$query}%")
             ->get();
 
-        $doctors = Doctor::where('name', 'like', "%{$query}%")
+        $doctors = Doctor::with('clinic')
+            ->where('name', 'like', "%{$query}%")
             ->orWhere('email', 'like', "%{$query}%")
             ->get();
 
