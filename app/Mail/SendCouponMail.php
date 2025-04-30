@@ -29,7 +29,7 @@ class SendCouponMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'خصم خاص لك 🎁',
+            subject:  "Congratulations! You've Received a Discount Coupon",
         );
     }
     

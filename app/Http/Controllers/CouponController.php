@@ -61,7 +61,6 @@ public function store(Request $request)
         'is_active' => true,
     ]);
 
-    // إرسال الإيميل (لو عايز تجربه خليها شغالة)
     $users = User::all();
     foreach ($users as $user) {
         // Mail::to($user->email)->queue(new SendCouponMail($coupon));
