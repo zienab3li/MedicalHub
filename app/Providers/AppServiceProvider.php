@@ -7,6 +7,7 @@ use App\Repositories\Cart\CartRepository;
 use App\Repositories\Cart\CartModelRepository;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Console\Scheduling\Schedule;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,5 +27,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen([
             SendWelcomeEmail::class
         ]);
+        $this->app->booted(function () {
+            $schedule = app(Schedule::class);
+            $schedule->command('app:complete-past-appointments')->everyMinute();
+
+        });
     }
 }
