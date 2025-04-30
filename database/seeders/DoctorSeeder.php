@@ -181,7 +181,8 @@ class DoctorSeeder extends Seeder
                 'phone' => $doctorData['phone'],
                 'image' => $storagePath,
                 'clinic_id' => $doctorData['clinic_id'],
-                'clinic_type' => $doctorData['clinic_type'],
+                // 'clinic_type' => $doctorData['clinic_type'],
+                'clinic_type' => $doctorData['clinic_type'] === 'clinic' ? \App\Models\Clinic::class : \App\Models\vet::class,
             ]);
             
         }
