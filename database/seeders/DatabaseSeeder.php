@@ -29,9 +29,9 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ServicesSeeder::class,
            // CartSeeder::class,
-<<<<<<< HEAD
+
              HumanPostsSeeder::class,
-=======
+
 
 
            ClinicSeeder::class,
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             ServicesSeeder::class,
             // CartSeeder::class,
             HumanPostsSeeder::class,
->>>>>>> search-feature
+
           
            
 
