@@ -28,6 +28,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DoctorAppointmentController;
+use App\Http\Controllers\OrderDashboardController;
 use App\Http\Controllers\VetController;
 
 
@@ -212,6 +213,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chat/users-with-appointments', [ChatController::class, 'getUsersWithAppointments']);
     Route::get('/chat/existing', [ChatController::class, 'checkExistingConversation']);
 });
+
+Route::get('getorders/{id}', [OrderDashboardController::class, 'show']);
 
 
 Route::post('/feedback', [FeedbackController::class, 'store']);
