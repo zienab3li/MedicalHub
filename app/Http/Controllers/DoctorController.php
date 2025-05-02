@@ -16,7 +16,7 @@ class DoctorController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = Doctor::with('clinic');
+        $query = Doctor::with(['clinic', 'vet']);
 
         if ($request->has('role')) {
             $query->where('role', $request->role); // 'human' or 'vet'
@@ -74,7 +74,7 @@ class DoctorController extends Controller
      */
     public function show(Doctor $doctor): JsonResponse
     {
-        return response()->json(['data' => $doctor->load('clinic')], 201);
+        return response()->json(['data' => $doctor->load(['clinic', 'vet'])], 201);
     }
 
     /**

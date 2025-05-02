@@ -29,21 +29,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen([
             SendWelcomeEmail::class
         ]);
+        
         $this->app->booted(function () {
             $schedule = app(Schedule::class);
             $schedule->command('app:complete-past-appointments')->everyMinute();
-
+            $schedule->command('app:complete-past-service-bookings')->everyMinute();
         });
-        // Automatically mark service bookings as completed when their time has passed
-    ServiceBooking::where('status', 'pending')
-    ->where(function ($query) {
-        $now = Carbon::now();
-        $query->where('appointment_date', '<', $now->toDateString())
-              ->orWhere(function ($q) use ($now) {
-                  $q->where('appointment_date', $now->toDateString())
-                    ->where('appointment_time', '<=', $now->toTimeString());
-              });
-    })
-    ->update(['status' => 'completed']);
     }
 }

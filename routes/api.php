@@ -28,6 +28,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DoctorAppointmentController;
+use App\Http\Controllers\OrderDashboardController;
 use App\Http\Controllers\VetController;
 
 
@@ -154,16 +155,7 @@ Route::group([],function () {
 });
 
 
-//CHeckout route
-Route::prefix('checkout')->group(function () {
-    Route::post('/', [OrderController::class, 'store']);
-    Route::get('/{id}', [OrderController::class, 'show']);
-// Route::prefix('checkout')->group(function () {
-//     Route::post('/', [OrderController::class, 'store']);
-//     Route::get('/{id}', [OrderController::class, 'show']);
-//     Route::put('/{id}', [OrderController::class, 'update']);
-//     Route::delete('/{id}', [OrderController::class, 'destroy']);
-});
+
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
@@ -222,6 +214,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/chat/existing', [ChatController::class, 'checkExistingConversation']);
 });
 
+Route::get('getorders/{id}', [OrderDashboardController::class, 'show']);
+
 
 Route::post('/feedback', [FeedbackController::class, 'store']);
 Route::get('/feedback', [FeedbackController::class, 'index']);
@@ -236,3 +230,4 @@ Route::get('/feedback', [FeedbackController::class, 'index']);
 
 
 Route::post('/coupons', [CouponController::class, 'store']);
+Route::get('/getcoupons', [CouponController::class, 'index']);

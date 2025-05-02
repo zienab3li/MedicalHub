@@ -17,6 +17,7 @@ class Doctor extends Authenticatable
         'email',
         'password',
         'clinic_id',
+        'vet_id',
         'specialization',
         'bio',
         'clinic_address',
@@ -34,20 +35,23 @@ class Doctor extends Authenticatable
         return $this->belongsTo(Clinic::class);
     }
 
-public function appointments()
-{
-    return $this->hasMany(Appointment::class);
-}
-// App\Models\Doctor.php
+    public function vet()
+    {
+        return $this->belongsTo(Vet::class);
+    }
 
-public function feedbacks()
-{
-    return $this->hasMany(Feedback::class);
-}
-// In Doctor.php
-public function averageRating()
-{
-    return $this->feedbacks()->avg('rating');
-}
+    public function appointments()
+    {
+        return $this->hasMany(Appointment::class);
+    }
 
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
+
+    public function averageRating()
+    {
+        return $this->feedbacks()->avg('rating');
+    }
 }
