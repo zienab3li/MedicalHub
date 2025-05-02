@@ -623,7 +623,7 @@ class ProductSeeder extends Seeder
                 'category_id' => 20,
                 'name' => 'Pet Training Spray',
                 'description' => 'Deterrent spray to keep pets away from unwanted areas while training.',
-                'image' => 'Pet Training Spray.png',
+                'image' => 'Pet Wound Care Spray.png',
                 'price' => 14.50,
                 'stock' => 15,
                 'quantity' => 20,
