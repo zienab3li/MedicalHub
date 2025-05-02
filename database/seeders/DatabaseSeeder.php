@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Doctor;
 use App\Models\User;
 use CouponSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
+        // Doctor::factory()->count(20)->create();
 
         // User::factory()->create([
         //     'name' => 'Test User',
@@ -24,13 +26,16 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
 
+
+            HumanPostsSeeder::class,
+
+
             ClinicSeeder::class,
             DoctorSeeder::class,
-            CategorySeeder::class,
+        CategorySeeder::class,
             ProductSeeder::class,
-            ServicesSeeder::class,
-            // CouponSeeder::class,
-            HumanPostsSeeder::class,
+        ServicesSeeder::class,
+                
 
         ]);
     }
