@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //cart orders
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('orders', OrderController::class);
+    Route::get('/comments/{comment}/replies', [CommentController::class, 'getReplies']);
 
     Route::apiResource('posts', PostController::class);
     Route::apiResource('comments', CommentController::class);
@@ -143,7 +144,14 @@ Route::prefix('products')->group(function () {
     Route::get('/type/{type}', [ProductController::class, 'showHumanProducts']);
 });
 
-
+Route::group([],function () {
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+    Route::post('/comments/{comment}/reply', [CommentController::class, 'reply']);
+    Route::put('/replies/{reply}', [CommentController::class, 'updateReply']);
+    Route::delete('/replies/{reply}', [CommentController::class, 'destroyReply']);
+});
 
 
 //CHeckout route
