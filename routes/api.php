@@ -56,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //cart orders
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('orders', OrderController::class);
+    Route::get('/comments/{comment}/replies', [CommentController::class, 'getReplies']);
 
     Route::apiResource('posts', PostController::class);
     Route::apiResource('comments', CommentController::class);

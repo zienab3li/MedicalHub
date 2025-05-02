@@ -74,6 +74,13 @@ class CommentController extends Controller
         return response()->json(['message' => 'Comment and its replies deleted successfully'], 200);
     }
 
+    public function getReplies(Comment $comment): JsonResponse
+{
+    $replies = $comment->replies()->with(['user', 'doctor'])->latest()->get();
+    return response()->json(['data' => $replies], 200);
+}
+
+
     public function reply(Request $request, Comment $comment): JsonResponse
     {
         $request->validate([
