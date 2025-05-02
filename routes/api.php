@@ -156,14 +156,14 @@ Route::group([],function () {
 
 //CHeckout route
 Route::prefix('checkout')->group(function () {
-    Route::post('/', [OrderContrller::class, 'store']);
+    Route::post('/', [OrderController::class, 'store']);
     Route::get('/{id}', [OrderController::class, 'show']);
 // Route::prefix('checkout')->group(function () {
 //     Route::post('/', [OrderController::class, 'store']);
 //     Route::get('/{id}', [OrderController::class, 'show']);
 //     Route::put('/{id}', [OrderController::class, 'update']);
 //     Route::delete('/{id}', [OrderController::class, 'destroy']);
-// });
+});
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
