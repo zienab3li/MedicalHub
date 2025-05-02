@@ -26,12 +26,23 @@ use App\Http\Controllers\SocialLoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CheckOutController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\DoctorAppointmentController;
 use App\Http\Controllers\VetController;
 
 
+use App\Http\Controllers\SearchController;
+
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     // Route::post('order', [CheckOutController::class, 'store']);
+    Route::get('/orders', [OrderController::class, 'index']); 
+    Route::get('/show', [OrderController::class, 'show']); 
 
     //admin routs
     Route::post('/admin/logout', [AdminController::class, 'logout']);
@@ -45,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //cart orders
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('orders', OrderController::class);
+    Route::get('/comments/{comment}/replies', [CommentController::class, 'getReplies']);
 
     Route::apiResource('posts', PostController::class);
     Route::apiResource('comments', CommentController::class);
@@ -54,6 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 });
+// routes/api.php
+Route::post('/check-coupon', [CouponController::class, 'check']);
+
 
 Route::put('/users/{id}/status', [AuthController::class, 'updateStatus']);
 
@@ -129,13 +144,32 @@ Route::prefix('products')->group(function () {
     Route::get('/type/{type}', [ProductController::class, 'showHumanProducts']);
 });
 
-
+Route::group([],function () {
+    Route::post('/comments', [CommentController::class, 'store']);
+    Route::put('/comments/{comment}', [CommentController::class, 'update']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
+    Route::post('/comments/{comment}/reply', [CommentController::class, 'reply']);
+    Route::put('/replies/{reply}', [CommentController::class, 'updateReply']);
+    Route::delete('/replies/{reply}', [CommentController::class, 'destroyReply']);
+});
 
 
 //CHeckout route
+<<<<<<< HEAD
 Route::prefix('checkout')->group(function () {
     Route::post('/', [OrderContrller::class, 'store']);
     Route::get('/{id}', [OrderController::class, 'show']);
+=======
+// Route::prefix('checkout')->group(function () {
+//     Route::post('/', [OrderController::class, 'store']);
+//     Route::get('/{id}', [OrderController::class, 'show']);
+//     Route::put('/{id}', [OrderController::class, 'update']);
+//     Route::delete('/{id}', [OrderController::class, 'destroy']);
+// });
+
+Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
+    Route::post('/', [OrderController::class, 'store']);
+>>>>>>> 8bcd0faef40f72a4a668f5d2192d12f35911fc62
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
@@ -143,7 +177,17 @@ Route::prefix('checkout')->group(function () {
 
 Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
 Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
+<<<<<<< HEAD
 Route::get('/orders/{id}', [OrderController::class, 'show']);
+=======
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/posts/inline-image', [PostController::class, 'uploadInlineImage']);
+    Route::apiResource('posts', PostController::class);
+});
+// في routes/api.php
+// Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
+
+>>>>>>> 8bcd0faef40f72a4a668f5d2192d12f35911fc62
 
 
 //prescriptions routes
@@ -187,3 +231,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/feedback', [FeedbackController::class, 'store']);
 Route::get('/feedback', [FeedbackController::class, 'index']);
+
+// search route
+Route::get('/search', [SearchController::class, 'search']);
+
+
+Route::post('/feedback', [FeedbackController::class, 'store']);
+Route::get('/feedback', [FeedbackController::class, 'index']);
+
+
+
+Route::post('/coupons', [CouponController::class, 'store']);

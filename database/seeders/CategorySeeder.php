@@ -110,7 +110,7 @@ class CategorySeeder extends Seeder
                 'image' => 'Pet Toys.jpg',
                 'type' => 'vet',
             ],
-            [
+            [ 
                 'name' => 'Pet Hygiene',
                 'description' => 'Hygiene products for pets including wipes, ear cleaners, and dental care items.',
                 'image' => 'Pet Hygiene.jpg',

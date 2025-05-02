@@ -24,6 +24,7 @@ class Doctor extends Authenticatable
         'address',
         'phone',
         'image',
+        'clinic_type'
     ];
     protected $hidden=[
         'password'
