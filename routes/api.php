@@ -155,11 +155,9 @@ Route::group([],function () {
 
 
 //CHeckout route
-<<<<<<< HEAD
 Route::prefix('checkout')->group(function () {
     Route::post('/', [OrderContrller::class, 'store']);
     Route::get('/{id}', [OrderController::class, 'show']);
-=======
 // Route::prefix('checkout')->group(function () {
 //     Route::post('/', [OrderController::class, 'store']);
 //     Route::get('/{id}', [OrderController::class, 'show']);
@@ -169,7 +167,6 @@ Route::prefix('checkout')->group(function () {
 
 Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
     Route::post('/', [OrderController::class, 'store']);
->>>>>>> 8bcd0faef40f72a4a668f5d2192d12f35911fc62
     Route::put('/{id}', [OrderController::class, 'update']);
     Route::delete('/{id}', [OrderController::class, 'destroy']);
 });
@@ -177,9 +174,7 @@ Route::prefix('checkout')->middleware('auth:sanctum')->group(function () {
 
 Route::post('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm']);
 Route::post('/orders/{order}/payment-intent', [PaymentController::class, 'createStripePaymentIntent'])->name('api.orders.payment-intent');
-<<<<<<< HEAD
 Route::get('/orders/{id}', [OrderController::class, 'show']);
-=======
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/posts/inline-image', [PostController::class, 'uploadInlineImage']);
     Route::apiResource('posts', PostController::class);
@@ -187,7 +182,6 @@ Route::middleware('auth:sanctum')->group(function () {
 // في routes/api.php
 // Route::get('/payments/{order}/stripe/confirm', [PaymentController::class, 'confirm'])->name('api.payments.stripe.confirm');
 
->>>>>>> 8bcd0faef40f72a4a668f5d2192d12f35911fc62
 
 
 //prescriptions routes
