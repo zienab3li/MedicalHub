@@ -51,10 +51,10 @@ class DatabaseSeeder extends Seeder
 //   ServicesSeeder::class,
     //    HumanPostsSeeder::class,
           
-    FeedbackSeeder::class,
+    // FeedbackSeeder::class,
 
 
-            HumanPostsSeeder::class,
+            // HumanPostsSeeder::class,
 
 
             ClinicSeeder::class,
