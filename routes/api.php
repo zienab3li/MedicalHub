@@ -232,3 +232,4 @@ Route::get('/feedback', [FeedbackController::class, 'index']);
 
 
 Route::post('/coupons', [CouponController::class, 'store']);
+Route::get('/getcoupons', [CouponController::class, 'index']);
