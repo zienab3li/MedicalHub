@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
 
+
         //      ClinicSeeder::class,
 
         //   DoctorSeeder::class,
@@ -51,6 +52,18 @@ class DatabaseSeeder extends Seeder
     //    HumanPostsSeeder::class,
           
     FeedbackSeeder::class,
+
+
+            HumanPostsSeeder::class,
+
+
+            ClinicSeeder::class,
+            DoctorSeeder::class,
+        CategorySeeder::class,
+            ProductSeeder::class,
+        ServicesSeeder::class,
+                
+
 
         ]);
     }

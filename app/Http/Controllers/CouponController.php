@@ -10,6 +10,23 @@ use Illuminate\Support\Facades\Mail;
 
 class CouponController extends Controller
 {
+
+
+    public function index()
+    {
+        $coupons = Coupon::where('is_active', true)
+            ->where(function ($query) {
+                $query->whereNull('expires_at')
+                      ->orWhere('expires_at', '>', now());
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
+        return response()->json([
+            'coupons' => $coupons
+        ]);
+    }
+    
     public function check(Request $request)
 {
     $validated = $request->validate([
