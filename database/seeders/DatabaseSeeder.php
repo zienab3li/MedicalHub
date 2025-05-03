@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Doctor;
+use App\Models\Post;
 use App\Models\User;
 use CouponSeeder;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -66,6 +67,9 @@ class DatabaseSeeder extends Seeder
 
 
         ]);
+
+        Post::factory()->count(20)->create();
+
     }
 
 }
