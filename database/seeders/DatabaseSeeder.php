@@ -54,15 +54,15 @@ class DatabaseSeeder extends Seeder
     // FeedbackSeeder::class,
 
 
-            // HumanPostsSeeder::class,
+           // HumanPostsSeeder::class,
 
 
-            ClinicSeeder::class,
-            DoctorSeeder::class,
-        CategorySeeder::class,
-            ProductSeeder::class,
-        ServicesSeeder::class,
-                
+        //     ClinicSeeder::class,
+        //     DoctorSeeder::class,
+        // CategorySeeder::class,
+        //     ProductSeeder::class,
+        // ServicesSeeder::class,
+        VetPostsSeeder::class,
 
 
         ]);

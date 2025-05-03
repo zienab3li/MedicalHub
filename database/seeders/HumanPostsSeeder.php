@@ -14,29 +14,25 @@ class HumanPostsSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        // جيب الدكاترة البشريين (role = 'human')
         $humanDoctors = Doctor::where('role', 'human')->get();
 
-        // لو مافيش دكاترة بشريين، أطلع رسالة تحذير
         if ($humanDoctors->isEmpty()) {
             echo "No human doctors found. Please run DoctorSeeder first.\n";
             return;
         }
 
-        // بوستات للدكاترة البشريين
         foreach ($humanDoctors as $doctor) {
-            for ($i = 0; $i < 3; $i++) { // 3 بوستات لكل دكتور
+            for ($i = 0; $i < 3; $i++) {
                 $post = Post::create([
                     'doctor_id' => $doctor->id,
                     'title' => $this->getHumanPostTitle($doctor->specialization, $faker),
                     'content' => $this->getHumanPostContent($doctor->specialization, $faker),
                     'image' => $faker->boolean(50) ? 'posts/human_post_' . $faker->numberBetween(1, 10) . '.jpg' : null,
-                    'role' => 'human', // أضفنا role صراحة
+                    'role' => 'human',
                     'created_at' => $faker->dateTimeBetween('-1 year', 'now'),
                     'updated_at' => $faker->dateTimeBetween('-1 year', 'now'),
                 ]);
 
-                // إضافة sections عشوائية (1-3 sections لكل بوست)
                 for ($j = 0; $j < $faker->numberBetween(1, 3); $j++) {
                     Section::create([
                         'post_id' => $post->id,
@@ -51,9 +47,6 @@ class HumanPostsSeeder extends Seeder
         }
     }
 
-    /**
-     * Generate a post title based on doctor's specialization
-     */
     private function getHumanPostTitle(string $specialization, Faker $faker): string
     {
         $titles = [
@@ -82,14 +75,26 @@ class HumanPostsSeeder extends Seeder
                 'How to Treat Acne Effectively',
                 'Protecting Your Skin from Sun Damage',
             ],
+            'Nutritionist' => [
+                'Healthy Eating Habits',
+                'Understanding Macronutrients',
+                'Meal Planning for Busy People',
+            ],
+            'Cardiologist' => [
+                'Heart Health Basics',
+                'Understanding Blood Pressure',
+                'Exercise for a Healthy Heart',
+            ],
         ];
-
-        return $titles[$specialization][array_rand($titles[$specialization])] ?? $faker->sentence(6);
+    
+        // Check if specialization exists and has titles
+        if (!isset($titles[$specialization]) || empty($titles[$specialization])) {
+            return $faker->sentence(6);
+        }
+    
+        return $titles[$specialization][array_rand($titles[$specialization])];
     }
 
-    /**
-     * Generate post content based on doctor's specialization
-     */
     private function getHumanPostContent(string $specialization, Faker $faker): string
     {
         $contents = [
@@ -98,6 +103,8 @@ class HumanPostsSeeder extends Seeder
             'Ophthalmologist' => 'Prolonged screen time can lead to eye strain. Follow the 20-20-20 rule: every 20 minutes, look at something 20 feet away for 20 seconds...',
             'Pediatrician' => 'Children need proper nutrition to support their growth. Ensure they get enough vitamins, minerals, and proteins through a balanced diet...',
             'Dermatologist' => 'A good skincare routine starts with cleansing, moisturizing, and sun protection. Avoid harsh products and consult a dermatologist for persistent issues...',
+            'Nutritionist' => 'A balanced diet is key to maintaining good health. Focus on whole foods, plenty of vegetables, and proper portion sizes for optimal nutrition...',
+            'Cardiologist' => 'Cardiovascular health is essential for overall wellbeing. Regular exercise, a heart-healthy diet, and stress management can reduce heart disease risk...',
         ];
 
         return $contents[$specialization] ?? $faker->paragraphs(3, true);
